@@ -143,7 +143,7 @@ public partial class Weapon : Node3D
             case 6:
                 Civilian Target7 = (Civilian)tempNode;
                 Target7.DamageHandler.DamageTarget(Damage, Penetration, tempNode);
-				Target7.Panic();
+				Target7.SetPanic();
                 Target7.Velocity = -GlobalTransform.Basis.X * (Damage * (Penetration + 1) * 5);
                 break;
         }

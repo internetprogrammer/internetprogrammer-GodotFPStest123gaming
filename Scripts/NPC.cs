@@ -16,7 +16,8 @@ public partial class NPC : DamagableCharacter
 	public const float PanicMultiplier = 0.1f;
     public RandomNumberGenerator PanicGenerator;
 	public int UnpanicValue = 10;
-	public int PanicValue = 0;
+    public int MinimumPanicRunDistance = 3;
+    public int PanicValue = 0;
 	bool IsPanicked = false;
 
     public enum State
@@ -25,7 +26,13 @@ public partial class NPC : DamagableCharacter
 	}
 	public State CurrentState;
 	State HashedState;
-
+	public void SetPanic()
+	{
+		if (CurrentState != State.Panicked)
+		{
+			Panic();
+		}
+	}
     public void Panic()
     {
 		IsPanicked = true;
@@ -37,14 +44,15 @@ public partial class NPC : DamagableCharacter
 		GD.Print("niggers");
         float x = PanicGenerator.RandfRange(-PanickedRunDistance, PanickedRunDistance);
         float y = PanicGenerator.RandfRange(-PanickedRunDistance, PanickedRunDistance);
+		if (x < MinimumPanicRunDistance && x > 0) { x = MinimumPanicRunDistance; }
+		else if(x > MinimumPanicRunDistance && x < 0) {x = MinimumPanicRunDistance;}
+        if (y < MinimumPanicRunDistance && y > 0) { y = MinimumPanicRunDistance; }
+        else if (y > MinimumPanicRunDistance && y < 0) { y = MinimumPanicRunDistance; }
         Vector3 target = new Vector3(x, 0, y);
         Navigate(GlobalPosition + target);
 		IsPanicked = false;
 		if(PanicGenerator.RandiRange(0, 100) < UnpanicValue) { CurrentState = HashedState; GD.Print("niggers2"); }
     }
-	public void Unpanick()
-	{
-	}
     public void Navigate(Vector3 target)
 	{
 		LookAt(target);
