@@ -34,8 +34,12 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -46,8 +50,7 @@
               "RelativeToolTip": "Alert.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-21T05:39:47.569Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-21T05:39:47.569Z"
             },
             {
               "$type": "Document",
@@ -59,8 +62,7 @@
               "RelativeToolTip": "Scripts\\NPC.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAA5wDwAAAB4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-21T04:37:26.431Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-21T04:37:26.431Z"
             },
             {
               "$type": "Document",
@@ -72,12 +74,7 @@
               "RelativeToolTip": "Scripts\\Weapon.cs",
               "ViewState": "AgIAAIQAAAAAAAAAAAAmwJEAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-21T04:44:56.143Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+              "WhenOpened": "2025-05-21T04:44:56.143Z"
             },
             {
               "$type": "Document",
@@ -89,8 +86,7 @@
               "RelativeToolTip": "Scripts\\Civilian.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAABwAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-21T04:44:28.847Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-21T04:44:28.847Z"
             },
             {
               "$type": "Document",
@@ -102,8 +98,7 @@
               "RelativeToolTip": "Sight.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-21T03:42:15.271Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-21T03:42:15.271Z"
             },
             {
               "$type": "Document",
@@ -115,8 +110,7 @@
               "RelativeToolTip": "Scripts\\Enemy.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAAowCgAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-20T04:53:06.722Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-20T04:53:06.722Z"
             }
           ]
         }
