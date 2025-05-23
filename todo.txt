@@ -1,0 +1,48 @@
+DONE lever
+DONE button 
+DONE BUT WILL NEED EXPANTION connect random lever with doors and other objects
+random interactable objects like radios that play music when interacted
+DONE secret doors activate via certain conditions
+DONE damagable doors
+DONEpenetration and armored targets
+WONTDOCUZBADjamming
+overheating
+explosive malfunctions
+gibbing
+stop wall clip
+
+DONEphysics based projectiles
+DONEShell Casings
+DONEgrenade
+DONEexplosion
+DONEarea damage
+
+handling damage from objects like thrown weapons and heavy objects
+DONEhandling fall damage
+handle crouch animation and collider
+kick
+
+audio
+music handler
+objects that play music
+gun sounds
+sound distortion when less bullets
+effects
+
+DONEnpc 
+dialogue system
+dialogue TTS
+civilian 
+DONE civilian pathfinding
+DONEcivilian awareness and scared
+enemy
+DONEenemy pathfinding BUT MIGHT NEED WORK WITH WALLS
+enemy awareness and panic
+enemy sight and skill
+enemy and civ drops
+
+mission organization
+targets
+goals
+exits
+money

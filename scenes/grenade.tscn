@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://cy4arh7omuby8"]
+
+[ext_resource type="Script" uid="uid://b70rtlnv3xtok" path="res://Scripts/Grenade.cs" id="1_gju2f"]
+[ext_resource type="PackedScene" uid="uid://bbfeqftu7uglc" path="res://explosion.tscn" id="2_vhiwl"]
+[ext_resource type="AudioStream" uid="uid://c62elok7538wp" path="res://music/fgc22.mp3" id="3_vhiwl"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_gju2f"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_24g56"]
+
+[node name="Grenade" type="RigidBody3D" node_paths=PackedStringArray("ExplosionSound", "ModelNode")]
+mass = 0.1
+script = ExtResource("1_gju2f")
+Damage = 50
+Explosion = ExtResource("2_vhiwl")
+ExplosionSound = NodePath("AudioStreamPlayer3D")
+ModelNode = NodePath("Model")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+shape = SubResource("SphereShape3D_gju2f")
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+mesh = SubResource("SphereMesh_24g56")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_vhiwl")

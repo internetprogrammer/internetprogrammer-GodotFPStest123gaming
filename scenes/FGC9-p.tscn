@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://dr2dc7aeaqa7v"]
+
+[ext_resource type="PackedScene" uid="uid://cnk4kwgk1lroy" path="res://fgc9og.glb" id="1_o7gf6"]
+[ext_resource type="Script" uid="uid://c0087j6hxqg5q" path="res://Scripts/Fgc9.cs" id="2_hnf3s"]
+[ext_resource type="PackedScene" uid="uid://cd1rvnw7jfq7e" path="res://scenes/bullet.tscn" id="3_qn7w1"]
+[ext_resource type="PackedScene" uid="uid://c4wdpwsxv1hpm" path="res://scenes/Casing.tscn" id="4_hnf3s"]
+[ext_resource type="AudioStream" uid="uid://c62elok7538wp" path="res://music/fgc22.mp3" id="4_pp7s5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q5jwl"]
+size = Vector3(1, 1, 0.778809)
+
+[node name="RigidBody3D7" type="RigidBody3D"]
+transform = Transform3D(1, 3.43789e-10, -1.62981e-09, -3.87445e-10, 1, 0, 2.32831e-10, -1.86265e-09, 1, 0, 0, 0)
+
+[node name="fgc9og" parent="." node_paths=PackedStringArray("BulletHole", "Collider", "rayCast3DAim", "DelayTimer", "AudioStreamPlayer", "CassingSpawner") instance=ExtResource("1_o7gf6")]
+transform = Transform3D(-2.16824e-09, 8.95284e-13, -0.05, 0.000261798, 0.0499993, -1.36424e-12, 0.0499993, -0.000261798, -2.16824e-09, 0, 0, 0)
+script = ExtResource("2_hnf3s")
+Damage = 20
+Type = 1
+BulletHole = NodePath("Bullet Exit")
+Collider = NodePath("../CollisionShape3D")
+rayCast3DAim = NodePath("Bullet Exit/AimCast")
+RecoilAmmount = Vector3(0.05, 0.05, 0.05)
+RoundsPerMinute = 650.0
+WeaponFireMode = 2
+DelayTimer = NodePath("DelayTimer")
+AudioStreamPlayer = NodePath("AudioStreamPlayer3D")
+bullet = ExtResource("3_qn7w1")
+Casing = ExtResource("4_hnf3s")
+BulletVelocity = 765.0
+CassingSpawner = NodePath("Node3D")
+EjectionVelocity = 7.0
+
+[node name="Bullet Exit" type="Node3D" parent="fgc9og"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -11.0415, -7.04432e-11, 0.489997)
+
+[node name="AimCast" type="RayCast3D" parent="fgc9og/Bullet Exit"]
+transform = Transform3D(1, 0, 0, -2.18279e-11, 1, -2.98087e-10, 9.31323e-10, -1.46656e-11, 1, -0.159088, 0.00134659, 1.76673)
+target_position = Vector3(0, 0, 0)
+
+[node name="DelayTimer" type="Timer" parent="fgc9og"]
+wait_time = 0.5
+one_shot = true
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="fgc9og"]
+stream = ExtResource("4_pp7s5")
+attenuation_model = 2
+
+[node name="Node3D" type="Node3D" parent="fgc9og"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -3)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.115, 1.54614e-11, 0, 1.5234e-11, 0.655, 0, 0, 0, 1.33, 1.49012e-08, -0.179375, 0.147092)
+shape = SubResource("BoxShape3D_q5jwl")
