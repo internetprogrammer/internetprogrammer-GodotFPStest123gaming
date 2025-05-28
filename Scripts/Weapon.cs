@@ -14,11 +14,11 @@ public partial class Weapon : Node3D
 	[Export]WeaponType Type = WeaponType.HitScan;
 
     [Export] public int MaxAmmo = 15;
-    [Export] public  int Ammo = 15;
+    [Export] public int Ammo = 15;
 	//init stuffs
 	[Export]public Node3D BulletHole;
 	[Export] public CollisionShape3D Collider;
-	[Export] public RayCast3D rayCast3DAim;
+	[Export] public RayCast3D RayCast3DAim;
 	public RigidBody3D RigidBody;
 	//recoil
 	[Export] public Vector3 RecoilAmmount = new Vector3(.2f, .2f, .2f);
@@ -48,9 +48,11 @@ public partial class Weapon : Node3D
 	
 
 
-    public void Shoot(RayCast3D rayCast3DHeadAim,Node world, Player player)
+    public void Shoot(RayCast3D rayCast3DHeadAim, CharacterBody3D player)
 	{
-		AudioStreamPlayer.PitchScale = AudioPitch - ((MaxAmmo - Ammo) * AudioPitchStep);
+		Node world = GetNode<Node3D>("/root/World");
+
+        AudioStreamPlayer.PitchScale = AudioPitch - ((MaxAmmo - Ammo) * AudioPitchStep);
         if (Ammo > 0 && CanShoot)
 		{
             AudioStreamPlayer.Play();
@@ -71,15 +73,12 @@ public partial class Weapon : Node3D
 
     }
 
-    private void DropCasing(Node world, Player player)
+    private void DropCasing(Node world, CharacterBody3D player)
     {
         RigidBody3D c = (RigidBody3D)Casing.Instantiate<Node3D>();
         world.AddChild(c);
         c.GlobalTransform = CassingSpawner.GlobalTransform;
 		c.LinearVelocity = CassingSpawner.GlobalTransform.Basis.Z *20* EjectionVelocity - (CassingSpawner.GlobalTransform.Basis.X * 3 * EjectionVelocity) + (player.Velocity / 2);
-
-
-
     }
 
     void ShootProjectile(RayCast3D rayCast3DHeadAim, Node world)
@@ -205,39 +204,32 @@ public partial class Weapon : Node3D
 			Node3D Weapon = (Node3D)this;
 			Weapon.Position = new Vector3(Weapon.Position.X, Weapon.Position.Y, Mathf.Lerp(Weapon.Position.Z ,RecoilTargetPosition.Z, 20 * (float)delta));
 			Weapon.Rotation = new Vector3(Mathf.Lerp(Weapon.Rotation.X,RecoilTargetRotation.X, LerpSpeedRecovery * (float)delta), Weapon.Rotation.Y, Mathf.Lerp(Weapon.Rotation.Z,-RecoilTargetRotation.Z, LerpSpeedRecovery * (float)delta));
-
-
 	}
-	private static int GetColliderDamagable(RayCast3D rayCast3DHeadAim)
+	private int GetColliderDamagable(RayCast3D rayCast3DHeadAim)
 	{
-		if (rayCast3DHeadAim.IsColliding())
-		{
-			if(rayCast3DHeadAim.GetCollider() is Enemy){
-				return 1;
-			}
-            else if (rayCast3DHeadAim.GetCollider() is Damagable && rayCast3DHeadAim.GetCollider() is RigidBody3D)
+        if (rayCast3DHeadAim.IsColliding())
+        {
+            if (rayCast3DHeadAim.IsColliding())
             {
-                return 4;
-            }
-            else if (rayCast3DHeadAim.GetCollider() is Damagable)
-            {
-                return 3;
-            }
-            else if(rayCast3DHeadAim.GetCollider() is RigidBody3D)
-			{
-                return 2;
-            } //rayCast3DHeadAim.GetCollider()
-            else if (rayCast3DHeadAim.GetCollider() is Door)
-            {
-                return 5;
-            }
-            else if (rayCast3DHeadAim.GetCollider() is Civilian)
-            {
-                return 6;
+                var collider = rayCast3DHeadAim.GetCollider();
+				GD.Print(((Node3D)collider).Name);
+                if (collider is Enemy)
+                    return 1;
+                else if (collider is Damagable && collider is RigidBody3D)
+                    return 4;
+                else if (collider is Damagable)
+                    return 3;
+                else if (collider is RigidBody3D)
+                    return 2;
+                else if (collider is Door)
+                    return 5;
+                else if (collider is Civilian)
+                    return 6;
             }
         }
-		return 0;
-	}
+
+        return 0;
+    }
 
     /*
 	private GodotObject GetColliderDamagable(RayCast3D rayCast3DHeadAim)

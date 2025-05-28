@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cy4arh7omuby8"]
 
 [ext_resource type="Script" uid="uid://b70rtlnv3xtok" path="res://Scripts/Grenade.cs" id="1_gju2f"]
-[ext_resource type="PackedScene" uid="uid://bbfeqftu7uglc" path="res://explosion.tscn" id="2_vhiwl"]
+[ext_resource type="PackedScene" uid="uid://bbfeqftu7uglc" path="res://scenes/explosion.tscn" id="2_vhiwl"]
 [ext_resource type="AudioStream" uid="uid://c62elok7538wp" path="res://music/fgc22.mp3" id="3_vhiwl"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_gju2f"]

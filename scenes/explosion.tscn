@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbfeqftu7uglc"]
+
+[ext_resource type="Script" uid="uid://csx4nbvl8qnaa" path="res://Scripts/explosion.cs" id="1_q7epf"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vxas0"]
+radius = 5.04382
+
+[node name="Explosion" type="Area3D" node_paths=PackedStringArray("timerDelay")]
+script = ExtResource("1_q7epf")
+timerDelay = NodePath("Timer")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_vxas0")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

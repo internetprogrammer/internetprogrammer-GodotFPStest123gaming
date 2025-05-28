@@ -3,7 +3,7 @@ using System;
 
 public partial class NPC : DamagableCharacter
 {
-	[Export] public float Speed = 2.5f;
+	[Export] public float Speed = 4.0f;
 	[Export] public float RunMultiplier = 2.0f;
 	public const float PanickedRunDistance = 3f;
 	[Export] public float JumpVelocity = 4.5f;
@@ -19,6 +19,8 @@ public partial class NPC : DamagableCharacter
     public int MinimumPanicRunDistance = 3;
     public int PanicValue = 0;
 	bool IsPanicked = false;
+	public bool IsRunning = false;
+	float ActualSpeed = 0;
 
     public enum State
 	{
@@ -35,6 +37,7 @@ public partial class NPC : DamagableCharacter
 	}
     public void Panic()
     {
+		IsRunning = true;
 		IsPanicked = true;
 		if (CurrentState != State.Panicked)
 		{
@@ -51,7 +54,7 @@ public partial class NPC : DamagableCharacter
         Vector3 target = new Vector3(x, 0, y);
         Navigate(GlobalPosition + target);
 		IsPanicked = false;
-		if(PanicGenerator.RandiRange(0, 100) < UnpanicValue) { CurrentState = HashedState; GD.Print("niggers2"); }
+		if(PanicGenerator.RandiRange(0, 100) < UnpanicValue) {IsRunning = false; CurrentState = HashedState; GD.Print("niggers2"); }
     }
     public void Navigate(Vector3 target)
 	{
@@ -72,10 +75,12 @@ public partial class NPC : DamagableCharacter
 		{
 			Panic();
 		}
+		ActualSpeed = Speed;
+		if (IsRunning) ActualSpeed *= RunMultiplier;
 			Vector3 velocity = Velocity;
 			Vector3 direction = (NavigationAgent.GetNextPathPosition() - GlobalPosition).Normalized();
 			//GD.Print("pathlocation:", NavigationAgent.GetNextPathPosition() ,"\n position:", GlobalPosition , "\n not normalized:", NavigationAgent.GetNextPathPosition() - GlobalPosition,"\n",(NavigationAgent.GetNextPathPosition() - GlobalPosition).Normalized() );
-			velocity = velocity.Lerp(direction * Speed, (float)delta * 14.0f) + (GetGravity() * (float)delta);
+			velocity = velocity.Lerp(direction * ActualSpeed, (float)delta * 14.0f) + (GetGravity() * (float)delta);
 			Velocity = velocity;
 			MoveAndSlide();
 		

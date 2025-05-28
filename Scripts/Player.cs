@@ -103,13 +103,13 @@ public partial class Player : DamagableCharacter
 					case 1:
 						if (Weapon1 != null)
 						{
-							Weapon1.Shoot(rayCast3DHeadAim,WorldNode, this);
+							Weapon1.Shoot(rayCast3DHeadAim, this);
 						}
 						break;
 					case 2:
 						if (Weapon2 != null)
 						{
-							Weapon2.Shoot(rayCast3DHeadAim, WorldNode, this);
+							Weapon2.Shoot(rayCast3DHeadAim, this);
 						}
 						break;
 				}
@@ -123,13 +123,13 @@ public partial class Player : DamagableCharacter
 						case 1:
 							if (Weapon1 != null)
 							{
-								Weapon1.Shoot(rayCast3DHeadAim, WorldNode, this);
+								Weapon1.Shoot(rayCast3DHeadAim, this);
 							}
 							break;
 						case 2:
 							if (Weapon2 != null)
 							{
-								Weapon2.Shoot(rayCast3DHeadAim, WorldNode, this);
+								Weapon2.Shoot(rayCast3DHeadAim, this);
 							}
 							break;
 				}

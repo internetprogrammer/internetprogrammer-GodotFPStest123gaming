@@ -14,9 +14,7 @@ public partial class Enemy : NPC
 	[Export] public Sight Sight;
 	Node3D target;
 	Vector3 LastKnownLocation;
-
-
-
+	[Export] public WeaponHandler weaponHandler;
 
     public void Guard()
 	{
@@ -47,13 +45,19 @@ public partial class Enemy : NPC
 		
 		Navigate(Target);
 	}
-	public void ShootAt(Node3D target){
-		
+	public void ShootAt(RayCast3D aimCast){
+		weaponHandler.weapon.Shoot(aimCast, this);
 	}
     public override void _Process(double delta)
     {
+		if(weaponHandler.weapon.Ammo == 0)
+		{
+			weaponHandler.weapon.Reload(100);
+
+        }
 		if (target != null)
 		{
+            IsRunning = true;
             if (Sight.CheckStillSightLine(aimCast, target) == null)
 			{
 				CheckSound(LastKnownLocation);
@@ -65,13 +69,16 @@ public partial class Enemy : NPC
 			LastKnownLocation = target.GlobalPosition;
             LookAt(target.GlobalPosition);
 			Stop();
+			ShootAt(aimCast);
         }
 		else
 		{
+			IsRunning = false;
             target = Sight.Check(aimCast);
 
             if (target != null)
             {
+				IsRunning = true;
                 LastKnownLocation = target.GlobalPosition;
                 LookAt(target.GlobalPosition);
 				Stop();

@@ -18,6 +18,7 @@ public partial class Damagable : Node3D
             GD.Print(Health);
             if (Health <= 0)
             {
+                GD.Print("death");
                 if (character == null)
                 {
                     KillTarget();
