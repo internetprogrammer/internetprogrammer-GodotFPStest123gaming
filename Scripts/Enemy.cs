@@ -13,7 +13,7 @@ public partial class Enemy : NPC
 	[Export] public Node3D PatrolPoint;
 	[Export] public Sight Sight;
 	Node3D target;
-	Vector3 LastKnownLocation;
+	Vector3 LastKnownLocation = Vector3.Zero;
 	[Export] public WeaponHandler weaponHandler;
 
     public void Guard()
@@ -48,42 +48,31 @@ public partial class Enemy : NPC
 	public void ShootAt(RayCast3D aimCast){
 		weaponHandler.weapon.Shoot(aimCast, this);
 	}
-    public override void _Process(double delta)
-    {
-		if(weaponHandler.weapon.Ammo == 0)
-		{
-			weaponHandler.weapon.Reload(100);
-
-        }
-		if (target != null)
-		{
-            IsRunning = true;
-            if (Sight.CheckStillSightLine(aimCast, target) == null)
-			{
-				CheckSound(LastKnownLocation);
-				target = null;
-               // LookAt(LastKnownLocation);
-                return;
-			}
-			target = Sight.CheckStillSightLine(aimCast, target);
-			LastKnownLocation = target.GlobalPosition;
-            LookAt(target.GlobalPosition);
-			Stop();
-			ShootAt(aimCast);
-        }
-		else
-		{
-			IsRunning = false;
-            target = Sight.Check(aimCast);
+	public void HandleSight()
+	{
+            target = Sight.Check(aimCast, this);
 
             if (target != null)
             {
-				IsRunning = true;
                 LastKnownLocation = target.GlobalPosition;
                 LookAt(target.GlobalPosition);
-				Stop();
+                Stop();
+                ShootAt(aimCast);
             }
+			else if(LastKnownLocation != Vector3.Zero)
+		{
+			Navigate(LastKnownLocation);
+		}
+        
+    }
+    public override void _Process(double delta)
+    {
+		//GD.Print(IsRunning);
+		if(weaponHandler.weapon.Ammo == 0)
+		{
+			weaponHandler.weapon.Reload(100);
         }
+		HandleSight();
 
     }
  

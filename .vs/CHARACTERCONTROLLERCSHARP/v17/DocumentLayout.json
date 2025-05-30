@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|c:\\users\\heisenberg\\work\\charactercontrollercsharp\\scripts\\civilian.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|solutionrelative:scripts\\civilian.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|c:\\users\\heisenberg\\work\\charactercontrollercsharp\\scripts\\sight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|solutionrelative:scripts\\sight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|c:\\users\\heisenberg\\work\\charactercontrollercsharp\\scripts\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -15,24 +15,12 @@
       "RelativeMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|solutionrelative:scripts\\npc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|c:\\users\\heisenberg\\work\\charactercontrollercsharp\\scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|solutionrelative:scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|c:\\users\\heisenberg\\work\\charactercontrollercsharp\\scripts\\civilian.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|solutionrelative:scripts\\civilian.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|c:\\users\\heisenberg\\work\\charactercontrollercsharp\\scripts\\weapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|solutionrelative:scripts\\weapon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|c:\\users\\heisenberg\\work\\charactercontrollercsharp\\alert.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|solutionrelative:alert.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|c:\\users\\heisenberg\\work\\charactercontrollercsharp\\scripts\\damagable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|solutionrelative:scripts\\damagable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|c:\\users\\heisenberg\\work\\charactercontrollercsharp\\sight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CF7207F5-4FB5-4138-B4DD-6195FAB297BB}|CharacterControllerCSharp.csproj|solutionrelative:sight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -56,46 +44,23 @@
               "RelativeDocumentMoniker": "Scripts\\Enemy.cs",
               "ToolTip": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\Scripts\\Enemy.cs",
               "RelativeToolTip": "Scripts\\Enemy.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAAA8wDsAAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-20T04:53:06.722Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Player.cs",
-              "DocumentMoniker": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\Scripts\\Player.cs",
-              "RelativeDocumentMoniker": "Scripts\\Player.cs",
-              "ToolTip": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\Scripts\\Player.cs",
-              "RelativeToolTip": "Scripts\\Player.cs",
-              "ViewState": "AgIAACkAAAAAAAAAAAAQwMEAAAAYAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "Sight.cs",
+              "DocumentMoniker": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\Scripts\\Sight.cs",
+              "RelativeDocumentMoniker": "Scripts\\Sight.cs",
+              "ToolTip": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\Scripts\\Sight.cs",
+              "RelativeToolTip": "Scripts\\Sight.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-28T07:05:09.611Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Damagable.cs",
-              "DocumentMoniker": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\Scripts\\Damagable.cs",
-              "RelativeDocumentMoniker": "Scripts\\Damagable.cs",
-              "ToolTip": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\Scripts\\Damagable.cs",
-              "RelativeToolTip": "Scripts\\Damagable.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-28T06:17:18.49Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Alert.cs",
-              "DocumentMoniker": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\Alert.cs",
-              "RelativeDocumentMoniker": "Alert.cs",
-              "ToolTip": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\Alert.cs",
-              "RelativeToolTip": "Alert.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-21T05:39:47.569Z"
+              "WhenOpened": "2025-05-29T07:33:23.596Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -105,7 +70,7 @@
               "RelativeDocumentMoniker": "Scripts\\NPC.cs",
               "ToolTip": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\Scripts\\NPC.cs",
               "RelativeToolTip": "Scripts\\NPC.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAQwBUAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAmwBQAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-21T04:37:26.431Z"
             },
@@ -123,28 +88,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Civilian.cs",
               "DocumentMoniker": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\Scripts\\Civilian.cs",
               "RelativeDocumentMoniker": "Scripts\\Civilian.cs",
               "ToolTip": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\Scripts\\Civilian.cs",
               "RelativeToolTip": "Scripts\\Civilian.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABkAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-21T04:44:28.847Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Sight.cs",
-              "DocumentMoniker": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\Sight.cs",
-              "RelativeDocumentMoniker": "Sight.cs",
-              "ToolTip": "C:\\Users\\Heisenberg\\Work\\charactercontrollercsharp\\Sight.cs",
-              "RelativeToolTip": "Sight.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-21T03:42:15.271Z"
+              "WhenOpened": "2025-05-21T04:44:28.847Z"
             }
           ]
         }

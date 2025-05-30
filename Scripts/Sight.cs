@@ -5,7 +5,7 @@ public partial class Sight : Area3D
 {
 	public float Range = 25f;
 	//[Export] Timer timerDelay;
-	[Export] public float SightAngle = Mathf.DegToRad(180);// the degrees of where the player can le see, +- too saar
+	[Export] public float SightAngle = 150;// the degrees of where the player can le see, +- too saar
 		
 	public override void _Ready()
 	{
@@ -14,59 +14,64 @@ public partial class Sight : Area3D
 		Monitoring = true;
 		Monitorable = true;
 	}
-		public Node3D Check(RayCast3D rayCast)
-	{
+		public Node3D Check(RayCast3D rayCast, Node3D attacker)
+	    {
 		var OverlapingBodies = GetOverlappingBodies();
 		foreach (var body in OverlapingBodies)
 		{
 			if (body is Player)
 			{
-				if (HasSightLine(body, this, rayCast)) { 
+				if (HasSightLine(body,attacker, rayCast)) { 
 					return body;
 				}
 			}
 		}
         return null;
     }
-    public Node3D CheckStillSightLine(RayCast3D rayCast, Node3D target)
+    public bool HasSightLine(Node3D target, Node3D attacker, RayCast3D rayCast)
     {
-        var OverlapingBodies = GetOverlappingBodies();
-        foreach (var body in OverlapingBodies)
-        {
-            if (body is Player)
-            {
-                if (body == target)
-                {
-                    if (StillHasSightLine(body, this, rayCast))
-                    {
-                        return body;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-    public bool HasSightLine(Node3D target,Node3D attacker,RayCast3D rayCast){
-		rayCast.LookAt(target.GlobalPosition);
-			if (rayCast.GetCollider() is Player) {
-				rayCast.Rotation = Vector3.Zero;
-				return true;
-			}
-       rayCast.Rotation = Vector3.Zero;
-        return false;
-	}
-    public bool StillHasSightLine(Node3D target, Node3D attacker, RayCast3D rayCast)
-    {
-        rayCast.LookAt(target.GlobalPosition);
-        //GD.Print("1: ", attacker.GlobalRotation.Y + SightAngle, ",", rayCast.GlobalRotation.Y, "\n2:", attacker.GlobalRotation.Y - SightAngle, ",", rayCast.GlobalRotation.Y);
+        Vector3 to = target.GlobalTransform.Origin;
+        Vector3 from = attacker.GlobalTransform.Origin;
 
-        if (attacker.GlobalRotation.Y + SightAngle > rayCast.GlobalRotation.Y && attacker.GlobalRotation.Y - SightAngle < rayCast.GlobalRotation.Y && rayCast.IsColliding())
+        // Flatten Y for horizontal check only
+        to.Y = from.Y;
+
+        Vector3 direction = (to - from).Normalized();
+
+        // Get the angle from attacker to the target
+        float angleToTarget = Mathf.Atan2(direction.X, direction.Z); // Godot 3D: Z is forward
+
+        float attackerYaw = attacker.GlobalRotation.Y;
+        float angleDiff = Mathf.Wrap(Mathf.RadToDeg(Mathf.AngleDifference(angleToTarget, attackerYaw)), -180, 180);
+
+        float distanceLeast = MathF.Abs(180 - angleDiff);
+        float distanceMost = MathF.Abs(angleDiff + 180);
+ 
+        GD.Print("distance least: ", distanceLeast);
+        GD.Print("distance most: ", distanceMost);
+
+
+        // Debug info
+        GD.Print("Attacker Yaw: ", Mathf.RadToDeg(attackerYaw));
+        GD.Print("Angle to Target: ", Mathf.RadToDeg(angleToTarget));
+        GD.Print("Angle Diff: ", angleDiff);
+        GD.Print("Sight Range:", SightAngle);
+
+        if (distanceLeast <= SightAngle/2 || distanceMost <= SightAngle/2)
         {
+            // Raycast setup
+            Vector3 localTargetPos = rayCast.ToLocal(target.GlobalTransform.Origin);
+            rayCast.TargetPosition = localTargetPos;
+
             if (rayCast.GetCollider() is Player)
             {
+                //rayCast.Rotation = Vector3.Zero;
                 return true;
             }
         }
+
+        //rayCast.Rotation = Vector3.Zero;
         return false;
     }
 }
+
