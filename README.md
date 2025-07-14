@@ -6,7 +6,7 @@ This is a Godot project with the purpose of both learning solid practices in thi
 
 One of my most important goals is to create a fun game
 
-# H2 7/14/2025
+# H3 7/14/2025
 The process of cleaning up the hastely created scripts has started and will clean up all of the code except for the AI and all the latest code since most new code is created with efficiency in mind.
 
 
