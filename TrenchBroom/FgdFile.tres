@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="FuncGodotFGDFile" load_steps=11 format=3 uid="uid://c1j7o8ru6w2wd"]
+
+[ext_resource type="Script" uid="uid://d22d6k41r72rf" path="res://addons/func_godot/src/fgd/func_godot_fgd_file.gd" id="1_a2nqx"]
+[ext_resource type="Resource" uid="uid://crgpdahjaj" path="res://addons/func_godot/fgd/func_godot_fgd.tres" id="1_tc5q6"]
+[ext_resource type="Resource" uid="uid://dgii0oo56a1e1" path="res://Definition/BarrelMilitary.tres" id="2_0p6kw"]
+[ext_resource type="Resource" uid="uid://bpr21b47800yh" path="res://Definition/BarrelCovered.tres" id="3_3jxmb"]
+[ext_resource type="Resource" uid="uid://crua2fhr8r7wr" path="res://Definition/BarrelUnCovered.tres" id="4_0p6kw"]
+[ext_resource type="Resource" uid="uid://lhen8ba5t86i" path="res://Definition/Door.tres" id="5_3jxmb"]
+[ext_resource type="Resource" uid="uid://bmn4ads6uxi3d" path="res://Definition/DoorMech.tres" id="6_gmbhj"]
+[ext_resource type="Resource" uid="uid://b8nbwaf38a3ja" path="res://Definition/Glass.tres" id="7_gmbhj"]
+[ext_resource type="Resource" uid="uid://c3hlc583gc71s" path="res://Definition/Teleporter.tres" id="8_l7dvm"]
+[ext_resource type="Resource" uid="uid://df88aeghgsyj5" path="res://Definition/Water.tres" id="9_s6a8f"]
+
+[resource]
+script = ExtResource("1_a2nqx")
+export_file = false
+target_map_editor = 1
+fgd_name = "FuncGodot"
+base_fgd_files = Array[Resource]([ExtResource("1_tc5q6")])
+entity_definitions = Array[Resource]([ExtResource("2_0p6kw"), ExtResource("3_3jxmb"), ExtResource("4_0p6kw"), ExtResource("5_3jxmb"), ExtResource("6_gmbhj"), ExtResource("7_gmbhj"), ExtResource("8_l7dvm"), ExtResource("9_s6a8f")])
+metadata/_custom_type_script = "uid://d22d6k41r72rf"

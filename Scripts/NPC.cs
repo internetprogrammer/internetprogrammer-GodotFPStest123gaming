@@ -51,15 +51,21 @@ public partial class NPC : DamagableCharacter
 		else if(x > MinimumPanicRunDistance && x < 0) {x = MinimumPanicRunDistance;}
         if (y < MinimumPanicRunDistance && y > 0) { y = MinimumPanicRunDistance; }
         else if (y > MinimumPanicRunDistance && y < 0) { y = MinimumPanicRunDistance; }
-        Vector3 target = new Vector3(x, 0, y);
+        Vector3 target = new (x, 0, y);
         Navigate(GlobalPosition + target);
 		IsPanicked = false;
 		if(PanicGenerator.RandiRange(0, 100) < UnpanicValue) {IsRunning = false; CurrentState = HashedState; GD.Print("niggers2"); }
     }
     public void Navigate(Vector3 target)
 	{
-		LookAt(target);
-		NavigationAgent.TargetPosition = target;
+        Vector3 direction = (target - GlobalPosition);
+        direction.Y = 0; // Prevent vertical tilting
+
+        if (direction.LengthSquared() > 0.01f)
+        {
+            LookAt(GlobalPosition + direction.Normalized(), Vector3.Up);
+        }
+        NavigationAgent.TargetPosition = target;
 	}
     public void Stop()
     {
@@ -82,7 +88,12 @@ public partial class NPC : DamagableCharacter
 			//GD.Print("pathlocation:", NavigationAgent.GetNextPathPosition() ,"\n position:", GlobalPosition , "\n not normalized:", NavigationAgent.GetNextPathPosition() - GlobalPosition,"\n",(NavigationAgent.GetNextPathPosition() - GlobalPosition).Normalized() );
 			velocity = velocity.Lerp(direction * ActualSpeed, (float)delta * 14.0f) + (GetGravity() * (float)delta);
 			Velocity = velocity;
-			MoveAndSlide();
+        CheckFallDamage();
+        if (!SnapUpToStair(delta))
+        {
+            MoveAndSlide();
+            SnapDownToStair();
+        }
 		
 	}
 	public bool GetWhetherReachedDestination()

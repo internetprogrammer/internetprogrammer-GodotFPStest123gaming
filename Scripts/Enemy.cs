@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Net.Http;
 
 public partial class Enemy : NPC	
 {
@@ -15,7 +16,10 @@ public partial class Enemy : NPC
 	Node3D target;
 	Vector3 LastKnownLocation = Vector3.Zero;
 	[Export] public WeaponHandler weaponHandler;
-
+	public override void _Ready()
+	{
+		AddChild(DamageHandler);
+	}
     public void Guard()
 	{
 

@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://c1ltn82d3hnfc"]
+
+[ext_resource type="Texture2D" uid="uid://ch7b72hifyd6d" path="res://assets/textures/world/TileFloor_64.png" id="1_4ageb"]
+
+[resource]
+albedo_texture = ExtResource("1_4ageb")
+metallic_specular = 0.0
+texture_filter = 2

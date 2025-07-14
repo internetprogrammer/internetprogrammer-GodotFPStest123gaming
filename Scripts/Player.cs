@@ -2,6 +2,7 @@ using Godot;
 using Microsoft.VisualBasic;
 using System;
 using System.ComponentModel.Design;
+using static System.Net.Mime.MediaTypeNames;
 // todo camera effects on movement,
 public partial class Player : DamagableCharacter
 {
@@ -11,8 +12,9 @@ public partial class Player : DamagableCharacter
 	[Export] public float JumpVelocity = 4.5f;
 	[Export] public int[] LockIDS = new int[] {0 };
 	[Export] public float Sensitivity = 0.03f;
-	private float RunMultiplierActual;
-	private float CrouchMultiplierActual;
+
+	private float RunMultiplierActual = 1;
+	private float CrouchMultiplierActual = 1;
 
 	[Export] public Camera3D camera;
 	[Export] public Node3D head;
@@ -31,8 +33,12 @@ public partial class Player : DamagableCharacter
 	[Export] public Node3D WorldNode;
 	[Export] public RayCast3D rayCast3DHeadAim;
 	[Export] public float WeaponRotationAmount = 8;
+    private const float WeaponSwayAmount = 0.01f;
+	[Export] public float WeaponSwayMultiplier = 1;
+    private float WeaponSwayTime;
+    private Vector3 WeaponOffset = Vector3.Zero;
 
-	private Node3D GrabbedObject;
+    private Node3D GrabbedObject;
 	public bool Grabbing = false;
 
 	private const float HeadMovementAmount = 0.06f;
@@ -43,9 +49,7 @@ public partial class Player : DamagableCharacter
 
 	InputEventMouseMotion MouseMotion; // will need for the procedural sway for the weapons 
 
-	private const float WeaponSwayAmount = 0.01f;
-	private float WeaponSwayTime;
-	private Vector3 WeaponOffset = Vector3.Zero;
+
 	Vector2 MouseRotationValue = Vector2.Zero;
 	[Export] public float LeanRotationAmount = 0.20f;
 	[Export] public float LeanOffsetAmount = 0.3f;
@@ -62,10 +66,29 @@ public partial class Player : DamagableCharacter
 	[Export] public float ReloadSentivity =0.006f;
 	bool IsReloading =false;
 	[Export] Godot.Label Crosshair;
+
 	[Export] string NormalCrosshair = ".";
 	[Export] string InteractCrosshair = "+";
+
 	[Export] float JumpSwayAmount = 0.01f;
-	public override void _Ready() {
+
+	[Export] int KickDamage = 100;
+	[Export] int KickPenetration = 0;
+	[Export] float KickBoost = 5.5f;
+    [Export] float KickKnockback = 0.5f;
+	[Export] RayCast3D RayCastKick;
+
+	public bool IsUnderwater = false;
+	[Export] float WaterGravityDecrease = 0.2f;
+	[Export] float SwimSpeed = 75f;
+    [Export] CanvasLayer watercanvas;
+	[Export] public ShapeCast3D WaterCast;
+
+
+
+
+
+    public override void _Ready() {
 		Input.MouseMode = Input.MouseModeEnum.Captured;
 	}
 	public override void _UnhandledInput(InputEvent @event) {
@@ -87,94 +110,139 @@ public partial class Player : DamagableCharacter
 	// handle anything that has to do with weapons
 	private void HandleWeapon(double delta)
 	{
-		// checks if the equiped weapon is null because
-		// its optimal to be put here and looks better
-		if ((weaponNum == 1 && Weapon1 == null) || (weaponNum == 2 && Weapon2 == null)) 
+		if (Input.IsActionJustPressed("kick") && !Grabbing)
 		{
-			return;
-		}
+			Node3D tempNode = (Node3D)GetColliderDamagable();
+			if (tempNode != null) {
 
-		Weapon[] Weapons = {Weapon1,Weapon2};
-		if (Weapons[(int)weaponNum - 1].WeaponFireMode == Weapon.FireMode.SemiAuto) {
-			if (Input.IsActionJustPressed("shoot") && !Grabbing && !IsReloading)
-			{
-				switch (weaponNum)
+				if (tempNode is Enemy enemy)
 				{
-					case 1:
-						if (Weapon1 != null)
-						{
+                    enemy.DamageHandler.DamageTarget(KickDamage, KickPenetration, tempNode);
+                    enemy.Velocity = -GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickKnockback);
+                }
+				else if (tempNode is RigidBody3D rigidbody)
+				{
+                    rigidbody.LinearVelocity += -GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickKnockback / rigidbody.Mass);
+                }
+				else if (tempNode is Damagable damagable)
+				{
+                    damagable.DamageTarget(KickDamage, KickPenetration);
+                }
+				else if (tempNode is Damagable damag && tempNode is RigidBody3D rigid)
+				{
+                    damag.DamageTarget(KickDamage, KickPenetration);
+                    rigid.LinearVelocity += -GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickKnockback);
+                }
+				else if (tempNode is Door door)
+				{
+					if (door.DamageHandler != null)
+					{
+						door.DamageHandler.DamageTarget(KickDamage, KickPenetration, tempNode);
+					}
+                }
+				else if (tempNode is DoorMechanical doormech)
+				{
+                    if (doormech.DamageHandler != null)
+                    {
+                        doormech.DamageHandler.DamageTarget(KickDamage, KickPenetration, tempNode);
+                    }
+                }
+				else if (tempNode is Civilian civilian)
+                {
+                    civilian.DamageHandler.DamageTarget(KickDamage, KickPenetration, tempNode);
+                    civilian.SetPanic();
+                    civilian.Velocity = -GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickKnockback);
+                }
+				else if (tempNode is Node3D)
+				{
+                    Velocity += GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickBoost);
+                }
+			}
+			
+		}
+        // checks if the equiped weapon is null because
+        // its optimal to be put here and looks better
+        if ((weaponNum == 1 && Weapon1 == null) || (weaponNum == 2 && Weapon2 == null))
+			{
+				return;
+			}
+
+			Weapon[] Weapons = { Weapon1, Weapon2 };
+			if (Weapons[(int)weaponNum - 1].WeaponFireMode == Weapon.FireMode.SemiAuto)
+			{
+				if (Input.IsActionJustPressed("shoot") && !Grabbing && !IsReloading)
+				{
+					switch (weaponNum)
+					{
+						case 1:
+							if (Weapon1 == null) break;
 							Weapon1.Shoot(rayCast3DHeadAim, this);
-						}
-						break;
-					case 2:
-						if (Weapon2 != null)
-						{
+							break;
+						case 2:
+						if (Weapon2 == null) break;
 							Weapon2.Shoot(rayCast3DHeadAim, this);
-						}
-						break;
+							break;
+					}
 				}
 			}
-		}
-		if(Weapons[(int)weaponNum -1].WeaponFireMode == Weapon.FireMode.FullAuto){
+			if (Weapons[(int)weaponNum - 1].WeaponFireMode == Weapon.FireMode.FullAuto)
+			{
 				if (Input.IsActionPressed("shoot") && !Grabbing && !IsReloading)
 				{
 					switch (weaponNum)
 					{
 						case 1:
-							if (Weapon1 != null)
-							{
-								Weapon1.Shoot(rayCast3DHeadAim, this);
-							}
+						if (Weapon1 == null) break;
+							Weapon1.Shoot(rayCast3DHeadAim, this);
 							break;
 						case 2:
-							if (Weapon2 != null)
-							{
-								Weapon2.Shoot(rayCast3DHeadAim, this);
-							}
+						if (Weapon2 == null) break;
+							Weapon2.Shoot(rayCast3DHeadAim, this);
 							break;
+					}
+
 				}
-				
-			}
 
-		}
-		if (Input.IsActionPressed("throwAway") && !IsReloading)
-		{
-
-			switch (weaponNum) // throws the weapon and removes its reference
-			{
-				case 1:
-						ThrowWeapon(Weapon1);
-						Weapon1 = null;
-					break;
-				case 2:
-						ThrowWeapon(Weapon2);
-						Weapon2 = null;
-					break;
 			}
-		}
-		if (Input.IsActionPressed("reload"))
-		{
-			IsReloading = true;
-			CurrentReloadHeight = Mathf.Lerp(CurrentReloadHeight,-MouseMotion.Relative.Y * ReloadSentivity,10*(float)delta);
-			CurrentReloadHeight = Mathf.Clamp(CurrentReloadHeight, MinReloadHeight, MaxReloadHeight);
-			if (CurrentReloadHeight <= ReloadHeight)
+			if (Input.IsActionPressed("throwAway") && !IsReloading)
 			{
-				switch (weaponNum) //reloads ammo ⚠️ need to put weaponammo variable into the weapon itself
+
+				switch (weaponNum) // throws the weapon and removes its reference
 				{
 					case 1:
-						WeaponAmmo1 = Weapon1.Reload(WeaponAmmo1);
+						ThrowWeapon(Weapon1);
+						Weapon1 = null;
 						break;
 					case 2:
-						WeaponAmmo2 = Weapon2.Reload(WeaponAmmo1);
+						ThrowWeapon(Weapon2);
+						Weapon2 = null;
 						break;
 				}
 			}
-		}
-		else
-		{
-			IsReloading = false;
-			CurrentReloadHeight = Mathf.Lerp(CurrentReloadHeight,0,10*(float)delta);
-		}
+			if (Input.IsActionPressed("reload"))
+			{
+				IsReloading = true;
+				CurrentReloadHeight = Mathf.Lerp(CurrentReloadHeight, -MouseMotion.Relative.Y * ReloadSentivity, 10 * (float)delta);
+				CurrentReloadHeight = Mathf.Clamp(CurrentReloadHeight, MinReloadHeight, MaxReloadHeight);
+				if (CurrentReloadHeight <= ReloadHeight)
+				{
+					switch (weaponNum) //reloads ammo ⚠️ need to put weaponammo variable into the weapon itself
+					{
+						case 1:
+							WeaponAmmo1 = Weapon1.Reload(WeaponAmmo1);
+							break;
+						case 2:
+							WeaponAmmo2 = Weapon2.Reload(WeaponAmmo1);
+							break;
+					}
+				}
+			}
+			else
+			{
+				IsReloading = false;
+				CurrentReloadHeight = Mathf.Lerp(CurrentReloadHeight, 0, 10 * (float)delta);
+			}
+		
 	}
 	// handle anything that has to do with interactions
 	private void HandleInteraction(double delta)
@@ -193,33 +261,40 @@ public partial class Player : DamagableCharacter
 			Node3D tempNode = (Node3D)GetColliderAsGD();
 			if (tempNode != null)
 			{
-				if (tempNode.GetChild(0) is Weapon) //there sure shit is a better way to do this and im pretty sure this is the fgc id which will fuck up the game when i add new guns so this is a temporary fix
+				if (tempNode.GetChild(0) is Weapon weapon) //there sure shit is a better way to do this and im pretty sure this is the fgc id which will fuck up the game when i add new guns so this is a temporary fix
 				{
-					Weapon tempWeapon = tempNode.GetChild(0) as Weapon;
+                    Weapon tempWeapon = tempNode.GetChild(0) as Weapon;
 					WeaponTake(tempWeapon);
 				}
-				else if (tempNode is Door)
+				else if (tempNode is Door door)
 				{
-					if (((Door)tempNode).CanBeInteracted)
+					if (door.CanBeInteracted)
 					{
-						((Door)tempNode).Interact(LockIDS);//the one is because that is the number of the static bbc or something
+						door.Interact(LockIDS);//the one is because that is the number of the static bbc or something
 					}
 				}
-				else if (tempNode is Lever)
+                else if (tempNode is DoorMechanical doormech)
+                {
+                    if (doormech.CanBeInteracted)
+                    {
+                        doormech.Interact(LockIDS);//the one is because that is the number of the static bbc or something
+                    }
+                }
+                else if (tempNode is Lever lever)
 				{
-					((Lever)tempNode).Interact();
+					lever.Interact();
 				}
-				else if (tempNode is Button)
+				else if (tempNode is Button button)
 				{
-					((Button)tempNode).Interact();
+                    button.Interact();
 				}
-				else if (tempNode.GetChild(0) is InteractableObject)
+				else if (tempNode.GetChild(0) is InteractableObject Interactable)
 				{
-					((InteractableObject)tempNode.GetChild(0)).Interact();
+					Interactable.Interact();
 				}
-				else if (tempNode.GetChild(0) is RetrievableObject)
+				else if (tempNode.GetChild(0) is RetrievableObject retrievable)
 				{
-					((RetrievableObject)tempNode.GetChild(0)).Pickup();
+                    retrievable.Pickup();
 				}
 				else if(GetColliderFromRB() != null)
 				{
@@ -242,11 +317,11 @@ public partial class Player : DamagableCharacter
 
 
 	}
-	// handle anything that has to do with movement
-	private void HandleMovement(Vector3 velocity, double delta)
+    // handle anything that has to do with movement
+    private void HandleMovement(Vector3 velocity, double delta)
 	{
 				// Handle Jump
-		if (Input.IsActionJustPressed("jump") && CheckGrounded())
+		if (Input.IsActionJustPressed("jump") && IsOnFloor())
 		{
 			velocity.Y += JumpVelocity;
 		}
@@ -266,46 +341,101 @@ public partial class Player : DamagableCharacter
 		{
 			CrouchMultiplierActual = 1.0f;
 		}
-		// Add the gravity.
-		if (!CheckGrounded())
-		{
-			velocity += GetGravity() * (float)delta;
-		}
+        Lean(delta); // this used to be under the isonfloor check so if issues are caused think about this
+        // Add the gravity.
+			if (!IsOnFloor())
+			{
+				velocity += GetGravity() * (float)delta;
+			}
 
-
-		Lean(delta);
-
-
-		// Get the input direction and handle the movement/deceleration.
-		// As good practice, you should replace UI actions with custom gameplay actions.
-		inputDir = Input.GetVector("left", "right", "up", "down");
-		Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
-	   HeadRotation(direction, delta);
-		if (direction != Vector3.Zero)
-		{
-			//the regular movement function with small additions for spice in the game
-			velocity.X = direction.X * Speed * RunMultiplierActual * CrouchMultiplierActual * (float)delta;
-			velocity.Z = direction.Z * Speed * RunMultiplierActual * CrouchMultiplierActual * (float)delta;
-		}
-		else
-		{
-			//can be used for decreasing air time too
-			velocity.X = Mathf.Lerp((float)velocity.X, (float)direction.X * Speed, (float)delta * 14.0f);
-			velocity.Z = Mathf.Lerp((float)velocity.Z, (float)direction.Z * Speed, (float)delta * 14.0f);
-		}
-		Velocity = velocity; // formality for translating calculated velocity into actual velocity in the game
-
+			// Get the input direction and handle the movement/deceleration.
+			// As good practice, you should replace UI actions with custom gameplay actions.
+			inputDir = Input.GetVector("left", "right", "up", "down");
+			Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+			HeadRotation(direction, delta);
+			if (direction != Vector3.Zero)
+			{
+				//the regular movement function with small additions for spice in the game
+				velocity.X = direction.X * Speed * RunMultiplierActual * CrouchMultiplierActual * (float)delta;
+				velocity.Z = direction.Z * Speed * RunMultiplierActual * CrouchMultiplierActual * (float)delta;
+			}
+			else
+			{
+				//can be used for decreasing air time too
+				velocity.X = Mathf.Lerp((float)velocity.X, (float)direction.X * Speed, (float)delta * 14.0f);
+				velocity.Z = Mathf.Lerp((float)velocity.Z, (float)direction.Z * Speed, (float)delta * 14.0f);
+			}
+		
+			Velocity = velocity; // formality for translating calculated velocity into actual velocity in the game
+	
 	}
-	public override void _PhysicsProcess(double delta)
+    private void HandleMovementWater(Vector3 velocity, double delta)
+    {
+		UpdateWaterCamCheck();
+        if (Input.IsActionPressed("run")) // || IsRunning == true for toggleable with the addition of a untoggle function
+        {
+            RunMultiplierActual = RunMultiplier;
+        }
+        else
+        {
+            RunMultiplierActual = 1.0f;
+        }
+        if (Input.IsActionPressed("crouch")) // || IsCrouching == true for toggleable with the addition of a untoggle function
+        {
+            CrouchMultiplierActual = CrouchMultiplier;
+        }
+        else
+        {
+            CrouchMultiplierActual = 1.0f;
+        }
+        Lean(delta); // this used to be under the isonfloor check so if issues are caused think about this
+                     // Add the gravity.
+        if (!IsOnFloor())
+        {
+            velocity += GetGravity()* WaterGravityDecrease * (float)delta;
+        }
+        // Get the input direction and handle the movement/deceleration.
+        // As good practice, you should replace UI actions with custom gameplay actions.
+        inputDir = Input.GetVector("left", "right", "up", "down");
+        Vector3 direction = (new Basis(Transform.Basis.X, Transform.Basis.Y, head.GlobalTransform.Basis.Z) * new Vector3(inputDir.X, 0 , inputDir.Y)).Normalized();
+        //HeadRotation(direction, delta);
+        if (direction != Vector3.Zero)
+        {
+            //the regular movement function with small additions for spice in the game
+            velocity.X = direction.X * SwimSpeed * RunMultiplierActual  * (float)delta;
+            velocity.Y = direction.Y * SwimSpeed * RunMultiplierActual * (float)delta;
+            velocity.Z = direction.Z * SwimSpeed * RunMultiplierActual  * (float)delta;
+        }
+        else
+        {
+            //can be used for decreasing air time too
+            velocity.X = Mathf.Lerp((float)velocity.X, (float)direction.X * SwimSpeed, (float)delta * 14.0f);
+            velocity.Z = Mathf.Lerp((float)velocity.Z, (float)direction.Z * SwimSpeed, (float)delta * 14.0f);
+        }
+
+        Velocity = velocity; // formality for translating calculated velocity into actual velocity in the game
+
+    }
+    public override void _PhysicsProcess(double delta)
 	{
 		Vector3 velocity = Velocity;
+	
 		HandleWeapon(delta);
 		HandleInteraction(delta);
-		HandleMovement(velocity,delta);
+		if (IsUnderwater) HandleMovementWater(velocity, delta);
+        else HandleMovement(velocity, delta);
 		HeadMovement(delta);
 		WeaponSway(delta,velocity.Y);
 		CheckFallDamage();		
-		MoveAndSlide();
+		if (!SnapUpToStair(delta))
+        {
+			MoveAndSlide();
+            SnapDownToStair();
+        }
+    }
+	public void LeaveWater()
+	{
+		IsUnderwater = false;
 	}
 	//Gets the object that is touched by the rayCast3DGrabbing to get for grabbing 
 	private void Lean(double delta)
@@ -332,14 +462,17 @@ public partial class Player : DamagableCharacter
 		camera.Rotation = new Vector3(camera.Rotation.X,
 			camera.Rotation.Y,
 			(float)Mathf.Lerp(camera.Rotation.Z, -inputDir.X * CameraRotationAmount, 10 * delta));
+
 			head.Rotation = new Vector3(head.Rotation.X, head.Rotation.Y, ActualLeanRotation);
+
 		//rotates head in the Z rotation with the value of velocity X lerped need to get relative X instead of X
 	}
+	
 
 	//head movement so the player isnt a stiff hot dog moving forward and left
 	private void HeadMovement(double delta)
 	{
-		if (CheckGrounded())
+		if (IsOnFloor())
 		{
 			HeadMovementTime += (float)delta * Velocity.Length();
 			head.Position = new Vector3(Mathf.Cos(HeadMovementTime * HeadMovementFrequency / 2) * HeadMovementAmount + ActualLeanOffset,
@@ -351,7 +484,7 @@ public partial class Player : DamagableCharacter
 	{
 		if (WeaponOffset == Vector3.Zero && (Weapon1 != null || Weapon2 != null))
 		{
-			switch (weaponNum) // throws the weapon and removes its reference
+			switch (weaponNum)
 			{
 				case 1:
 					WeaponOffset = Weapon1.WeaponOffset;
@@ -362,19 +495,23 @@ public partial class Player : DamagableCharacter
 			}
 		}
 		WeaponSwayTime += (float)delta * Velocity.Length();
-		if (CheckGrounded())// so that no movement is done
+		if (IsOnFloor())// so that no movement is done
 		{
-			WeaponNode.Position = new Vector3(-Mathf.Cos(WeaponSwayTime * HeadMovementFrequency / 2) * WeaponSwayAmount,
-					-Mathf.Sin(WeaponSwayTime * HeadMovementFrequency) * WeaponSwayAmount + CurrentReloadHeight,
+			WeaponNode.Position = new Vector3(-Mathf.Cos(WeaponSwayTime * HeadMovementFrequency / 2) * (WeaponSwayAmount * WeaponSwayMultiplier),
+					-Mathf.Sin(WeaponSwayTime * HeadMovementFrequency) * (WeaponSwayAmount * WeaponSwayMultiplier) + CurrentReloadHeight,
 					0) + WeaponOffset;
 		}
 		else
 		{
 			WeaponNode.Position.Lerp(new Vector3(0, CurrentReloadHeight, 0) + WeaponOffset,10*(float)delta);
 		}
+
 		WeaponNode.Position.Lerp(WeaponOffset, 10 * (float)delta);
+
 		if (IsReloading) return;
+
 		MouseRotationValue.Lerp(Vector2.Zero, 10 * (float)delta);
+
 		WeaponNode.Rotation = new Vector3((float)Mathf.Lerp(WeaponNode.Rotation.X, MouseRotationValue.Y * WeaponRotationAmount * 1.5f - (YVelocity * JumpSwayAmount), 10 * delta),
 			(float)Mathf.Lerp(WeaponNode.Rotation.Y, MouseRotationValue.X * WeaponRotationAmount * 1.5f, 10 * delta),
 			(float)Mathf.Lerp(WeaponNode.Rotation.Z, -inputDir.X * WeaponRotationAmount * 50, 10 * delta));
@@ -386,10 +523,10 @@ public partial class Player : DamagableCharacter
 		if (weaponNum == 1)
 		{
 			if (Weapon1 != null) {
-
 				SwapWeapon(Weapon1 ,tempWeapon);
 			}
 			Weapon1 = tempWeapon;
+			GD.Print(Weapon1.Name);
 			ReadyGun(Weapon1);
 		}
 		else {
@@ -414,7 +551,7 @@ public partial class Player : DamagableCharacter
 		if (weaponCurrent != null)
 		{
 			WeaponNode.RemoveChild(weaponCurrent.GetParent<Node3D>());
-			WorldNode.AddChild(weaponCurrent.GetParent<Node3D>());
+            GetNode<Node3D>("/root/World").AddChild(weaponCurrent.GetParent<Node3D>());
 		}
 		weaponCurrent.GetParent<Node3D>().GlobalPosition = weaponGrabbed.GetParent<Node3D>().GlobalPosition;
 		weaponCurrent.GetParent<Node3D>().GlobalRotation = weaponGrabbed.GetParent<Node3D>().GlobalRotation;
@@ -424,8 +561,8 @@ public partial class Player : DamagableCharacter
 	public void ThrowWeapon(Weapon weapon)
 	{
 		weapon.EnablePhysics();
-		WeaponNode.RemoveChild(weapon.GetParent<Node3D>());                                           
-		WorldNode.AddChild(weapon.GetParent<Node3D>());// gets the rigidbody parent and does the physics stuff there instead of the fgc to first avoid errors and secondly to actually work since it the rigidbody doesnt like to coexist with the fgc9 script
+		WeaponNode.RemoveChild(weapon.GetParent<Node3D>());
+        GetNode<Node3D>("/root/World").AddChild(weapon.GetParent<Node3D>());// gets the rigidbody parent and does the physics stuff there instead of the fgc to first avoid errors and secondly to actually work since it the rigidbody doesnt like to coexist with the fgc9 script
 
 		weapon.GetParent<Node3D>().GlobalPosition = GrabPoint.GlobalPosition;
 
@@ -483,7 +620,7 @@ public partial class Player : DamagableCharacter
 		rb.LinearVelocity = (GrabPoint.GlobalPosition - GrabbedObject.GlobalPosition) * 13;
 		if (Input.IsActionJustPressed("throw"))// this is what allows throwing
 		{
-			rb.LinearVelocity = (GrabbedObject.GlobalPosition - LastPosition) * 13 - head.GlobalTransform.Basis.Z * (ThrowPower* 2); // gets the head forward direction so that both x and y are calculated since the y is used only in the head object in order not to have the player do unwanted gymnastics
+			rb.LinearVelocity = (GrabbedObject.GlobalPosition - LastPosition) * 13 - head.GlobalTransform.Basis.Z * (ThrowPower* 2) / rb.Mass; // gets the head forward direction so that both x and y are calculated since the y is used only in the head object in order not to have the player do unwanted gymnastics
 			GrabbedObject = null;// removes the object from the player so it doesnt return
 			Grabbing = false; // this is used to untoggle grabbing
 		}
@@ -522,4 +659,47 @@ public partial class Player : DamagableCharacter
 		}
 
 	}
+    private GodotObject GetColliderDamagable()
+    {
+        if (RayCastKick.IsColliding())
+        {
+            if (RayCastKick.IsColliding())
+            {
+                return RayCastKick.GetCollider();
+            }
+        }
+		return null;
+    }
+
+    //is head underwater code
+    public void Underwater()
+    {
+        watercanvas.Visible = true;
+    }
+    public void NotUnderwater()
+    {
+        watercanvas.Visible = false;
+    }
+	public void UpdateWaterCamCheck()
+	{
+		if (WaterCast.IsColliding()) {
+			bool atleastonewater = false;
+			for (int i = 0; i < WaterCast.GetCollisionCount(); i++)
+			{
+				if(WaterCast.GetCollider(i) is water)
+				{
+					Underwater();
+					atleastonewater = true;
+				}
+			}
+			if (!atleastonewater)
+			{
+				NotUnderwater();
+			}
+		}
+        else
+        {
+            NotUnderwater();
+        }
+    }
 }

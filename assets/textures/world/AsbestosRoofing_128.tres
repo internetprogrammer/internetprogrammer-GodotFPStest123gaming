@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://c314eqmovrf6s"]
+
+[ext_resource type="Texture2D" uid="uid://bu007gjldmstd" path="res://assets/textures/world/AsbestosRoofing_128.png" id="1_qctsk"]
+
+[resource]
+albedo_texture = ExtResource("1_qctsk")
+metallic_specular = 0.0
+texture_filter = 2

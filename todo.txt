@@ -37,6 +37,8 @@ DONE civilian pathfinding
 DONEcivilian awareness and scared
 enemy
 DONEenemy pathfinding BUT MIGHT NEED WORK WITH WALLS
+enemy find cover where player cant see
+enemy retreat
 enemy awareness and panic
 enemy sight and skill
 enemy and civ drops

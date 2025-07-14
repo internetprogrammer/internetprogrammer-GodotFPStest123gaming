@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://15xqw4njihmq"]
+
+[ext_resource type="Shader" uid="uid://bkelocxhgjwmo" path="res://watershader2d.gdshader" id="1_d4yt1"]
+
+[resource]
+shader = ExtResource("1_d4yt1")
+shader_parameter/intensity = 0.01
+shader_parameter/wave_scale = 10.0

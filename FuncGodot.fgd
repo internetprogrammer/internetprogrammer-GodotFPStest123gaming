@@ -1,0 +1,66 @@
+@BaseClass color(204 204 204) size(-8.0 -8.0 -8.0, 8.0 8.0 8.0) = Phong
+[
+	_phong(choices) : "Phong shading" : 0 = 
+	[
+		0 : "Disabled"
+		1 : "Smooth shading"
+	]
+	_phong_angle(float) : "Phong smoothing angle" : "89.0"
+]
+
+@SolidClass color(204 204 204) = worldspawn : "Default static world geometry. Builds a StaticBody3D with a single MeshInstance3D and a single convex CollisionShape3D shape. Also builds Occluder3D to aid in render culling of other VisualInstance3D nodes." []
+
+@SolidClass color(204 204 204) base(Phong) = func_geo : "Static collidable geometry. Builds a StaticBody3D with a MeshInstance3D, a single concave CollisionShape3D, and an OccluderInstance3D." []
+
+@SolidClass color(204 204 204) base(Phong) = func_detail : "Static collidable geometry. Builds a StaticBody3D with a MeshInstance3D and a single concave CollisionShape3D. Does not occlude other VisualInstance3D nodes." []
+
+@SolidClass color(204 204 204) base(Phong) = func_detail_illusionary : "Static geometry with no collision. Builds a Node3D with a MeshInstance3D. Does not occlude other VisualInstance3D nodes." []
+
+@SolidClass color(204 204 204) base(Phong) = func_illusionary : "Static geometry with no collision. Builds a Node3D with a MeshInstance3D and an Occluder3D to aid in render culling of other VisualInstance3D nodes." []
+@PointClass color(204 204 204) size(-8.0 -8.0 -8.0, 8.0 8.0 8.0) = barrel_military : "military barrel" []
+
+@PointClass color(204 204 204) size(-8.0 -8.0 -8.0, 8.0 8.0 8.0) = barrel_regular : "Regular Barrel" []
+
+@PointClass color(204 204 204) size(-8.0 -8.0 -8.0, 8.0 8.0 8.0) = barrel_uncovered : "uncovered barrel" []
+
+@SolidClass color(204 204 204) = func_door : "door o algo" 
+[
+	armour(integer) : "" : 0
+	damagable(choices) : "" = 
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	health(integer) : "" : 100
+	rotationspeed(float) : "" : "1.5"
+]
+
+@SolidClass color(204 204 204) = func_doormech : "door o algo" 
+[
+	armour(integer) : "" : 0
+	damagable(choices) : "" = 
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	health(integer) : "" : 100
+	risespeed(float) : "" : "2.0"
+]
+
+@SolidClass color(204 204 204) = func_glass : "breakable glass" 
+[
+	armour(integer) : "" : 0
+	effectscenepath(string) : "" : ""
+	health(integer) : "" : 100
+	maxdb(float) : "" : "10.0"
+	pitch(float) : "" : "1.0"
+	soundpath(string) : "" : ""
+	volumedb(float) : "" : "10.0"
+]
+
+@PointClass color(204 204 204) size(-8.0 -8.0 -8.0, 8.0 8.0 8.0) = teleporter : "teleporter" 
+[
+	teleportlocation(string) : "" : "0.0 0.0 0.0"
+]
+
+@SolidClass color(204 204 204) = func_water : "func_water" []

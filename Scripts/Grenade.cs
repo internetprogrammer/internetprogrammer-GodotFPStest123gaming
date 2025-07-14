@@ -13,6 +13,7 @@ public partial class Grenade : RigidBody3D
     Timer timer;
     Timer DecayTimer;
     [Export] public Node3D ModelNode;// deletes the grenade visibly to the player while the decay timer removes the grenade so that the sound can play
+    [Export] GpuParticles3D Effect;
     public override void _Ready()
     {
         timer = new Timer();
@@ -38,6 +39,9 @@ public partial class Grenade : RigidBody3D
     public void Explode()
     {
         ExplosionSound.Play();
+        Node3D player = GetNode<Node3D>("/root/World/Player");
+        Effect.LookAt(player.GlobalPosition);
+        Effect.Emitting = true;
         Node3D node = Explosion.Instantiate<Node3D>();
         explosion ExplosionInstance = (explosion)node;
         AddChild(ExplosionInstance);

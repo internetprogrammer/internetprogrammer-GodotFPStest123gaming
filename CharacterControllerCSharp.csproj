@@ -3,4 +3,9 @@
     <TargetFramework>net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Prefabs\" />
+    <Folder Include="Scripts\Player\" />
+    <Folder Include="Scripts\World Objects\" />
+  </ItemGroup>
 </Project>

@@ -8,7 +8,8 @@ public partial class Weapon : Node3D
 	//logic
 	[Export]public int Damage = 15;
     [Export] public int Penetration = 0;
-	public enum WeaponType{
+    [Export] float Knockback = 5f;
+    public enum WeaponType{
 		HitScan,Projectile
 	}
 	[Export]WeaponType Type = WeaponType.HitScan;
@@ -21,7 +22,7 @@ public partial class Weapon : Node3D
 	[Export] public RayCast3D RayCast3DAim;
 	public RigidBody3D RigidBody;
 	//recoil
-	[Export] public Vector3 RecoilAmmount = new Vector3(.2f, .2f, .2f);
+	[Export] public Vector3 RecoilAmmount = new(.2f, .2f, .2f);
 	[Export] public float LerpSpeed = 10.0f;
 	[Export] public float LerpSpeedRecovery = 20.0f;
 	//handle fire rate and fire mode
@@ -33,7 +34,7 @@ public partial class Weapon : Node3D
 
     Vector3 RecoilTargetRotation;
 	Vector3 RecoilTargetPosition;
-	public Vector3 WeaponOffset = new Vector3(0.428f, -0.1f, -0.50f);
+	[Export]public Vector3 WeaponOffset = new(0.428f, -0.1f, -0.50f);
 
 	[Export] AudioStreamPlayer3D AudioStreamPlayer;
     [Export] float AudioPitch = 1f;
@@ -41,12 +42,15 @@ public partial class Weapon : Node3D
 	//projectile
 	[Export] PackedScene bullet;
     [Export] PackedScene Casing;
+    [Export] PackedScene BulletCrater;
     [Export] public float BulletVelocity;
 	[Export] Node3D CassingSpawner;
 	[Export] float EjectionVelocity = 20f;
-	int init = 0;//funny _ready doesnt work so we do this
-	
+    [Export] GpuParticles3D Effect;
+    [Export] public bool Lerp = false;
+    int init = 0;//funny _ready doesnt work so we do this
 
+    public object RayCast3DHeadAim { get; private set; }
 
     public void Shoot(RayCast3D rayCast3DHeadAim, CharacterBody3D player)
 	{
@@ -102,50 +106,69 @@ public partial class Weapon : Node3D
     }
 	void ShootHitScan(RayCast3D rayCast3DHeadAim)
 	{
+
         DelayTimer.Start(60.0 / RoundsPerMinute); //(60.0f)/RoundsPerMinute
         CanShoot = false;
         Ammo--;
+        Node3D player = GetNode<Node3D>("/root/World/Player");
+        Effect.LookAt(player.GlobalPosition);
+        Effect.Emitting = true;
         Recoil();
         Node3D tempNode = (Node3D)rayCast3DHeadAim.GetCollider();
-        switch (GetColliderDamagable(rayCast3DHeadAim))
+        if (tempNode is Enemy enemy)
         {
-            case 0:
-                break;
-            case 1:
-                Enemy Target = (Enemy)tempNode;
-                Target.DamageHandler.DamageTarget(Damage, Penetration, tempNode);
-                //Target.Velocity.X = Mathf.Lerp((float)velocity.X, (float)direction.X * Speed, (float)delta * 14.0f);
-                //Target.Velocity.Z = Mathf.Lerp((float)velocity.Z, (float)direction.Z * Speed, (float)delta * 14.0f);
-                Target.Velocity = -GlobalTransform.Basis.X * (Damage * (Penetration + 1) * 5);
-                break;
-            case 2:
-                RigidBody3D Target2 = (RigidBody3D)tempNode;
-                //Target.Velocity.X = Mathf.Lerp((float)velocity.X, (float)direction.X * Speed, (float)delta * 14.0f);
-                //Target.Velocity.Z = Mathf.Lerp((float)velocity.Z, (float)direction.Z * Speed, (float)delta * 14.0f);
-                Target2.LinearVelocity += -GlobalTransform.Basis.X * (Damage * (Penetration + 1) * 5);
-                break;
-            case 3:
-                Damagable Target3 = (Damagable)tempNode;
-                Target3.DamageTarget(Damage, Penetration);
-                break;
-            case 4:
-                Damagable Target4 = (Damagable)tempNode;
-                RigidBody3D Target5 = (RigidBody3D)tempNode;
-                Target4.DamageTarget(Damage, Penetration);
-                Target5.LinearVelocity += -GlobalTransform.Basis.X * (Damage * (Penetration + 1) * 5);
-                break;
-            case 5:
-                Door Target6 = (Door)tempNode;
-                if (Target6.DamageHandler == null) { break; }
-                Target6.DamageHandler.DamageTarget(Damage, Penetration, tempNode);
-                break;
-            case 6:
-                Civilian Target7 = (Civilian)tempNode;
-                Target7.DamageHandler.DamageTarget(Damage, Penetration, tempNode);
-				Target7.SetPanic();
-                Target7.Velocity = -GlobalTransform.Basis.X * (Damage * (Penetration + 1) * 5);
-                break;
+
+            enemy.DamageHandler.DamageTarget(Damage, Penetration, tempNode);
+            //Target.Velocity.X = Mathf.Lerp((float)velocity.X, (float)direction.X * Speed, (float)delta * 14.0f);
+            //Target.Velocity.Z = Mathf.Lerp((float)velocity.Z, (float)direction.Z * Speed, (float)delta * 14.0f);
+            enemy.Velocity = -GlobalTransform.Basis.X * (Damage * (Penetration + 1) * Knockback);
         }
+        else if (tempNode is RigidBody3D rigidbody)
+        {
+            //Target.Velocity.X = Mathf.Lerp((float)velocity.X, (float)direction.X * Speed, (float)delta * 14.0f);
+            //Target.Velocity.Z = Mathf.Lerp((float)velocity.Z, (float)direction.Z * Speed, (float)delta * 14.0f);
+            rigidbody.LinearVelocity += -GlobalTransform.Basis.X * (Damage * (Penetration + 1) * Knockback / rigidbody.Mass);
+        }
+        else if (tempNode is Damagable damagable)
+        {
+            damagable.DamageTarget(Damage, Penetration);
+        }
+        else if (tempNode is Damagable damag && tempNode is RigidBody3D rigid)
+        {
+
+            damag.DamageTarget(Damage, Penetration);
+            rigid.LinearVelocity += -GlobalTransform.Basis.X * (Damage * (Penetration + 1) * Knockback);
+        }
+        else if (tempNode is Door door)
+        {
+            if (door.DamageHandler == null) { return; }
+            door.DamageHandler.DamageTarget(Damage, Penetration, tempNode);
+        }
+        else if (tempNode is DoorMechanical doormech)
+        {
+            if (doormech.DamageHandler == null) { return; }
+            doormech.DamageHandler.DamageTarget(Damage, Penetration, tempNode);
+        }
+        else if (tempNode is Civilian civilian)
+        {
+            civilian.DamageHandler.DamageTarget(Damage, Penetration, tempNode);
+            civilian.SetPanic();
+            civilian.Velocity = -GlobalTransform.Basis.X * (Damage * (Penetration + 1) * Knockback);
+        }
+        else if (tempNode is Node3D)
+        {
+            Node3D crater = (Node3D)BulletCrater.Instantiate();
+            GetNode<Node3D>("/root/World").AddChild(crater);
+
+            // Set position to the hit point
+            crater.GlobalPosition = rayCast3DHeadAim.GetCollisionPoint();
+
+            // Align crater to the surface normal
+            Vector3 normal = rayCast3DHeadAim.GetCollisionNormal();
+            crater.LookAt(crater.GlobalPosition + normal, Vector3.Up);
+
+        }
+        
     }
     private void OnDelayTimerTimeoutSignal()
     {
@@ -182,54 +205,58 @@ public partial class Weapon : Node3D
 	}
 	public void Recoil()
 	{
-		RecoilTargetPosition.Z = RecoilAmmount.Y;
-		//RecoilTargetRotation.X = RecoilAmmount.X;
-		RecoilTargetRotation.Z = RecoilAmmount.Z;
+        if (Lerp)
+        {
+            RecoilTargetPosition.Z = RecoilAmmount.Y;
+            //RecoilTargetRotation.X = RecoilAmmount.X;
+            RecoilTargetRotation.Z = RecoilAmmount.Z;
+
+        }
+        else
+        {
+            
+            RecoilTargetPosition.Z += RecoilAmmount.Y;
+            //RecoilTargetRotation.X = RecoilAmmount.X;
+            RecoilTargetRotation.Z += RecoilAmmount.Z;
+
+            Mathf.Clamp(RecoilTargetPosition.Z, 0, RecoilAmmount.Y * 2);
+            Mathf.Clamp(RecoilTargetRotation.Z, 0, RecoilAmmount.Z * 2);
+        }
 	}
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _PhysicsProcess(double delta)
 	{
+        
 		if(init == 0)
 		{
             DelayTimer.Timeout += OnDelayTimerTimeoutSignal;
             init++;
-		}
-		if (RigidBody == null)
+        }
+        if (RigidBody == null )
 		{
 			RigidBody = GetParent() as RigidBody3D;
 		}
-			RecoilTargetPosition = new Vector3(0, 0, Mathf.Lerp(RecoilTargetPosition.Z, 0, LerpSpeed * (float)delta));
-			RecoilTargetRotation = new Vector3(Mathf.Lerp(RecoilTargetRotation.X, 0, 10 * (float)delta), 0, Mathf.Lerp(RecoilTargetRotation.Z, 0, LerpSpeed * (float)delta));
-			Node3D Weapon = (Node3D)this;
-			Weapon.Position = new Vector3(Weapon.Position.X, Weapon.Position.Y, Mathf.Lerp(Weapon.Position.Z ,RecoilTargetPosition.Z, 20 * (float)delta));
-			Weapon.Rotation = new Vector3(Mathf.Lerp(Weapon.Rotation.X,RecoilTargetRotation.X, LerpSpeedRecovery * (float)delta), Weapon.Rotation.Y, Mathf.Lerp(Weapon.Rotation.Z,-RecoilTargetRotation.Z, LerpSpeedRecovery * (float)delta));
-	}
-	private int GetColliderDamagable(RayCast3D rayCast3DHeadAim)
-	{
-        if (rayCast3DHeadAim.IsColliding())
+        if (Lerp)
         {
-            if (rayCast3DHeadAim.IsColliding())
-            {
-                var collider = rayCast3DHeadAim.GetCollider();
-				GD.Print(((Node3D)collider).Name);
-                if (collider is Enemy)
-                    return 1;
-                else if (collider is Damagable && collider is RigidBody3D)
-                    return 4;
-                else if (collider is Damagable)
-                    return 3;
-                else if (collider is RigidBody3D)
-                    return 2;
-                else if (collider is Door)
-                    return 5;
-                else if (collider is Civilian)
-                    return 6;
-            }
+            RecoilTargetPosition = new Vector3(0, 0, Mathf.Lerp(RecoilTargetPosition.Z, 0, LerpSpeed * (float)delta));
+            RecoilTargetRotation = new Vector3(Mathf.Lerp(RecoilTargetRotation.X, 0, 10 * (float)delta), 0, Mathf.Lerp(RecoilTargetRotation.Z, 0, LerpSpeed * (float)delta));
+            Node3D Weapon = (Node3D)this;
+            Weapon.Position = new Vector3(Weapon.Position.X, Weapon.Position.Y, Mathf.Lerp(Weapon.Position.Z, RecoilTargetPosition.Z, 20 * (float)delta));
+            Weapon.Rotation = new Vector3(Mathf.Lerp(Weapon.Rotation.X, RecoilTargetRotation.X, LerpSpeedRecovery * (float)delta), Weapon.Rotation.Y, Mathf.Lerp(Weapon.Rotation.Z, -RecoilTargetRotation.Z, LerpSpeedRecovery * (float)delta));
         }
-
-        return 0;
+        else
+        {
+  
+            RecoilTargetPosition = new Vector3(0, 0, Mathf.Lerp(RecoilTargetPosition.Z, 0, LerpSpeed * (float)delta));
+            RecoilTargetRotation = new Vector3(Mathf.Lerp(RecoilTargetRotation.X, 0, 10 * (float)delta), 0, Mathf.Lerp(RecoilTargetRotation.Z, 0, LerpSpeed * (float)delta));
+            Node3D Weapon = (Node3D)this;
+            Weapon.Position = new Vector3(Weapon.Position.X, Weapon.Position.Y, Mathf.Lerp(Weapon.Position.Z, RecoilTargetPosition.Z, 20 * (float)delta));
+            Weapon.Rotation = new Vector3(Mathf.Lerp(Weapon.Rotation.X, RecoilTargetRotation.X, LerpSpeedRecovery * (float)delta), Weapon.Rotation.Y, -Mathf.Lerp(Weapon.Rotation.Z, -RecoilTargetRotation.Z, LerpSpeedRecovery * (float)delta));
+            GD.Print(Weapon.Rotation);
+        }
     }
+
 
     /*
 	private GodotObject GetColliderDamagable(RayCast3D rayCast3DHeadAim)

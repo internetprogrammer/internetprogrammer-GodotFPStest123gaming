@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bi2gn1xt7a2kp"]
+
+[sub_resource type="FogMaterial" id="FogMaterial_p8eix"]
+density = 0.2
+albedo = Color(0.903598, 0.903598, 0.903598, 1)
+edge_fade = 0.75
+
+[node name="WaterFog" type="FogVolume"]
+material = SubResource("FogMaterial_p8eix")

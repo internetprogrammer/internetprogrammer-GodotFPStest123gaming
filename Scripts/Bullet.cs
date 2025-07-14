@@ -9,6 +9,7 @@ public partial class Bullet : RigidBody3D
     public int Damage = 0;
     public int Penetration = 0;
     [Export] bool DoesBulletStay;
+    [Export] PackedScene BulletCrater;
 
 
     public override void _Ready()
@@ -20,45 +21,44 @@ public partial class Bullet : RigidBody3D
     }
     private void OnBodyEntered(Node body)
     {
-        if (body is Enemy)
+        if (body is Enemy enemy)
         {
-            Enemy Target = (Enemy)body;
-            Target.DamageHandler.DamageTarget(Damage, Penetration, (Node3D)body);
+            enemy.DamageHandler.DamageTarget(Damage, Penetration, (Node3D)body);
             //Target.Velocity.X = Mathf.Lerp((float)velocity.X, (float)direction.X * Speed, (float)delta * 14.0f);
             //Target.Velocity.Z = Mathf.Lerp((float)velocity.Z, (float)direction.Z * Speed, (float)delta * 14.0f);
             //Target.Velocity = -GlobalTransform.Basis.X * (Damage * (Penetration + 1) * 5);
             QueueFree();
         }
-        else if (body is RigidBody3D)
+        else if (body is RigidBody3D )
         {
-            RigidBody3D Target2 = (RigidBody3D)body;
             QueueFree();
         }
-        else if (body is Damagable)
+        else if (body is Damagable damagable)
         {
-            Damagable Target3 = (Damagable)body;
-            Target3.DamageTarget(Damage, Penetration);
+            damagable.DamageTarget(Damage, Penetration);
             QueueFree();
         }
-        else if (body is RigidBody3D && body is Damagable)
+        else if (body is RigidBody3D && body is Damagable damagablerigid)
         {
-            Damagable Target4 = (Damagable)body;
-            RigidBody3D Target5 = (RigidBody3D)body;
-            Target4.DamageTarget(Damage, Penetration);
+            damagablerigid.DamageTarget(Damage, Penetration);
             QueueFree();
 
         }
-        else if (body is Door)
+        else if (body is Door door)
         {
-            Door Target6 = (Door)body;
-            if (Target6.DamageHandler == null) { QueueFree(); return; }
-            Target6.DamageHandler.DamageTarget(Damage, Penetration, (Node3D)body);
+            if (door.DamageHandler == null) { QueueFree(); return; }
+            door.DamageHandler.DamageTarget(Damage, Penetration, (Node3D)body);
             QueueFree();
         }
-        if (body is Civilian)
+        else if (body is DoorMechanical doormech)
         {
-            Enemy Target = (Enemy)body;
-            Target.DamageHandler.DamageTarget(Damage, Penetration, (Node3D)body);
+            if (doormech.DamageHandler == null) { QueueFree(); return; }
+            doormech.DamageHandler.DamageTarget(Damage, Penetration, (Node3D)body);
+            QueueFree();
+        }
+        if (body is Civilian civilian)
+        {
+            civilian.DamageHandler.DamageTarget(Damage, Penetration, (Node3D)body);
             //Target.Velocity.X = Mathf.Lerp((float)velocity.X, (float)direction.X * Speed, (float)delta * 14.0f);
             //Target.Velocity.Z = Mathf.Lerp((float)velocity.Z, (float)direction.Z * Speed, (float)delta * 14.0f);
             //Target.Velocity = -GlobalTransform.Basis.X * (Damage * (Penetration + 1) * 5);
@@ -71,6 +71,7 @@ public partial class Bullet : RigidBody3D
         }
         else
         {
+
             QueueFree();
         }
 

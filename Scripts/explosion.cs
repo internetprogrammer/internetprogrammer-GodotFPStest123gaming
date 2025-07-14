@@ -10,6 +10,7 @@ public partial class explosion : Area3D
 	[Export] Timer timerDelay;
 	public Node3D ParentNode;
 	[Export] public float DamageFalloff = 0.5f;
+	
 
 
 	public override void _Ready()

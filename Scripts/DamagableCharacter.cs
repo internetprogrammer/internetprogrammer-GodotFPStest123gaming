@@ -8,11 +8,17 @@ public partial class DamagableCharacter : CharacterBody3D
     [Export] public float Armour = 0;
 	[Export] public int FallDamageLimit = 150;
 	[Export] public int FallDamageAmount = 5;
-    [Export] public RayCast3D rayCast3DGrounded;
+
+    [Export] public float FloorMaxAngle = 45f;
+    [Export] public float MaxStepHeight = 0.5f;
+    [Export] public RayCast3D StairBelowRaycast;
+    [Export] public RayCast3D StairAheadRaycast;
+
     public Vector3 velocity;
 	public Damagable DamageHandler = new Damagable();
 	float FallingVariable =0;
 	int init =0;
+    public bool SnappedToStairLastFrame = false;
     public override void _PhysicsProcess(double delta)
 	{
 		if(init == 0)
@@ -28,10 +34,11 @@ public partial class DamagableCharacter : CharacterBody3D
         velocity += GetGravity() * (float)delta;
         Velocity = velocity;
         MoveAndSlide();
+        SnapDownToStair();
     }
 	public void CheckFallDamage()
 	{
-		if (!CheckGrounded())
+		if (!IsOnFloor())
 		{
 			FallingVariable += -Velocity.Y;
 
@@ -48,14 +55,76 @@ public partial class DamagableCharacter : CharacterBody3D
 		}
 			
 	}
-    public bool CheckGrounded()
+    public bool SnapUpToStair(double delta)
     {
-        if (rayCast3DGrounded.IsColliding())//raycast to check if grounded
+        if (!IsOnFloor() && ! SnappedToStairLastFrame) return false;
+        if (Velocity.Y > 0 || (Velocity * new Vector3(1, 0, 1)).Length() ==0 ) return false;
+        Vector3 ExpectedMoveMotion = Velocity * new Vector3(1, 0, 1) * (float)delta;
+            Transform3D StepPositionWithClearence = GlobalTransform.Translated(ExpectedMoveMotion + new Vector3(0,MaxStepHeight *2, 0));
+        PhysicsTestMotionResult3D DownCheckResult = new PhysicsTestMotionResult3D();
+
+        if ((RunBodyTestMotion(StepPositionWithClearence, new Vector3(0, -MaxStepHeight * 2, 0), DownCheckResult)) 
+            && (!DownCheckResult.GetCollider().IsClass("RigidBody3D") && !DownCheckResult.GetCollider().IsClass("CharacterBody3D")))   
         {
-            return true;
+            float StepHeight = ((StepPositionWithClearence.Origin + DownCheckResult.GetTravel()) - GlobalPosition).Y;
+            /*
+            GD.Print(StepPositionWithClearence.Origin.Y, " origin");
+            GD.Print(DownCheckResult.GetTravel().Y, " travel");
+            GD.Print(-GlobalPosition.Y, "position");
+            GD.Print(StepHeight); debug in case this shit breaks again
+            */
+            if (StepHeight < MaxStepHeight || StepHeight <= 0.01f || (DownCheckResult.GetCollisionPoint() - GlobalPosition).Y > MaxStepHeight)
+            {
+                StairAheadRaycast.GlobalPosition = DownCheckResult.GetCollisionPoint() + new Vector3 (0,MaxStepHeight,0) + ExpectedMoveMotion.Normalized() * 0.1f;
+                StairAheadRaycast.ForceRaycastUpdate();
+                if (StairAheadRaycast.IsColliding() && !IsSurfaceTooSteep(StairAheadRaycast.GetCollisionNormal())) {
+                    GlobalPosition = StepPositionWithClearence.Origin + DownCheckResult.GetTravel();
+                    ApplyFloorSnap();
+                    SnappedToStairLastFrame = true;
+                    return true;
+                }
+                return false;
+            }
+            return false;
         }
+;
         return false;
+
     }
+    public void SnapDownToStair()
+    {
+        bool DidSnap = false;
+        StairBelowRaycast.ForceRaycastUpdate();
+        bool FloorBelow = StairBelowRaycast.IsColliding() && IsSurfaceTooSteep(StairBelowRaycast.GetCollisionNormal());
+        if (IsOnFloor() && velocity.Y == 0 & FloorBelow)
+        {
+            PhysicsTestMotionResult3D BodyTestResult = new PhysicsTestMotionResult3D();
+            if (RunBodyTestMotion(GlobalTransform, new Vector3(0, -MaxStepHeight, 0), BodyTestResult))
+            {
+                float TranslateY = BodyTestResult.GetTravel().Y;
+                //temp swap to evade .Y restriction on transform somewhat like how abc temp programs work
+                Vector3 NewPosition = GlobalPosition;
+                NewPosition.Y += TranslateY;
+                GlobalPosition = NewPosition;
+                ApplyFloorSnap();
+                DidSnap = true;
+            }
+        }
+        SnappedToStairLastFrame = DidSnap;
+    }
+    bool IsSurfaceTooSteep(Vector3 normal)
+    {
+        return normal.AngleTo(Vector3.Up) > FloorMaxAngle;
+    }
+    bool RunBodyTestMotion(Transform3D from, Vector3 motion, PhysicsTestMotionResult3D result = null)// bullshit code that does stuff required for body test motions
+    {
+        if (result == null) result = new PhysicsTestMotionResult3D();
+        PhysicsTestMotionParameters3D param = new PhysicsTestMotionParameters3D();
+        param.From = from;
+        param.Motion = motion;
+        return PhysicsServer3D.BodyTestMotion(GetRid(), param, result);
+    }
+
     /*
 	public override void _PhysicsProcess(double delta)
 	{

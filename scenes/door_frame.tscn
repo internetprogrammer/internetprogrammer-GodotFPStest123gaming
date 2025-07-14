@@ -65,11 +65,9 @@ _data = {
 [sub_resource type="BoxShape3D" id="BoxShape3D_id5dr"]
 size = Vector3(0.25087, 0.893433, 0.733154)
 
-[node name="DoorFrame" type="StaticBody3D" node_paths=PackedStringArray("AnimationPlayer", "DoorTimer")]
+[node name="DoorFrame" type="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 script = ExtResource("1_id5dr")
-AnimationPlayer = NodePath("AnimationPlayer")
-DoorTimer = NodePath("Timer")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
