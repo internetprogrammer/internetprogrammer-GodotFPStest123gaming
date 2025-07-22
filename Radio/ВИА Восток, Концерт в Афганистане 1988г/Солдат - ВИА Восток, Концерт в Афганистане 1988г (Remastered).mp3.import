@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://vplcfq8va60v"
+path="res://.godot/imported/Солдат - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-c60a7b36e5a71a620d20f54d5eb2e528.mp3str"
+
+[deps]
+
+source_file="res://Radio/ВИА Восток, Концерт в Афганистане 1988г/Солдат - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3"
+dest_files=["res://.godot/imported/Солдат - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-c60a7b36e5a71a620d20f54d5eb2e528.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

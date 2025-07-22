@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dll8vr8wwpd4p"
+path="res://.godot/imported/05_Вот и осень.mp3-bf10b443071fdf05fc162a9fd1deda79.mp3str"
+
+[deps]
+
+source_file="res://Radio/Группа Рубеж, Первый Албом 1991 (Original)/05_Вот и осень.mp3"
+dest_files=["res://.godot/imported/05_Вот и осень.mp3-bf10b443071fdf05fc162a9fd1deda79.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

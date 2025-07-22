@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://beq3taqrnxl5m"
+path="res://.godot/imported/Тревога - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-0da806baec375e07b008012c7a27acf0.mp3str"
+
+[deps]
+
+source_file="res://Radio/ВИА Восток, Концерт в Афганистане 1988г/Тревога - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3"
+dest_files=["res://.godot/imported/Тревога - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-0da806baec375e07b008012c7a27acf0.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://lu1d2gnea7rj"]
 
-[ext_resource type="Script" uid="uid://c0087j6hxqg5q" path="res://Scripts/Fgc9.cs" id="1_d226a"]
-[ext_resource type="PackedScene" uid="uid://cnk4kwgk1lroy" path="res://fgc9og.glb" id="2_whxdr"]
+[ext_resource type="Script" path="res://Scripts/Fgc9.cs" id="1_d226a"]
+[ext_resource type="PackedScene" uid="uid://cnk4kwgk1lroy" path="res://Models/fgc9og.glb" id="2_whxdr"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ghasc"]
 

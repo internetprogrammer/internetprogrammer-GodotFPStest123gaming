@@ -5,7 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Prefabs\" />
-    <Folder Include="Scripts\Player\" />
     <Folder Include="Scripts\World Objects\" />
   </ItemGroup>
 </Project>

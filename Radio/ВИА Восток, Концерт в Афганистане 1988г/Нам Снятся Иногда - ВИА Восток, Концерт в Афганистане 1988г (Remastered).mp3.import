@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dh2novrl1avba"
+path="res://.godot/imported/Нам Снятся Иногда - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-46cbbc4aa59f3fbc810254f856b01ba8.mp3str"
+
+[deps]
+
+source_file="res://Radio/ВИА Восток, Концерт в Афганистане 1988г/Нам Снятся Иногда - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3"
+dest_files=["res://.godot/imported/Нам Снятся Иногда - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-46cbbc4aa59f3fbc810254f856b01ba8.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

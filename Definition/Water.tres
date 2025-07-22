@@ -1,7 +1,6 @@
-[gd_resource type="Resource" script_class="FuncGodotFGDSolidClass" load_steps=3 format=3 uid="uid://df88aeghgsyj5"]
+[gd_resource type="Resource" script_class="FuncGodotFGDSolidClass" load_steps=2 format=3 uid="uid://df88aeghgsyj5"]
 
 [ext_resource type="Script" uid="uid://2vtxmh8ubks5" path="res://addons/func_godot/src/fgd/func_godot_fgd_solid_class.gd" id="1_6708t"]
-[ext_resource type="Script" uid="uid://cl2r624pmnvwk" path="res://Scripts/water.cs" id="2_svy18"]
 
 [resource]
 script = ExtResource("1_6708t")
@@ -22,7 +21,6 @@ add_vertex_metadata = false
 add_face_position_metadata = false
 add_face_normal_metadata = false
 add_collision_shape_face_range_metadata = false
-script_class = ExtResource("2_svy18")
 classname = "func_water"
 description = ""
 func_godot_internal = false

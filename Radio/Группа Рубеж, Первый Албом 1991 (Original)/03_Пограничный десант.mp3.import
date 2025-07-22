@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://q1s3mfqeg60w"
+path="res://.godot/imported/03_Пограничный десант.mp3-c7e3c203fc934445e995c77304b906d2.mp3str"
+
+[deps]
+
+source_file="res://Radio/Группа Рубеж, Первый Албом 1991 (Original)/03_Пограничный десант.mp3"
+dest_files=["res://.godot/imported/03_Пограничный десант.mp3-c7e3c203fc934445e995c77304b906d2.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

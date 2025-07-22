@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://ds5qiy85ynri6"]
 
-[ext_resource type="PackedScene" uid="uid://bxwjhumrn6yq0" path="res://models/akms.glb" id="1_sk03q"]
-[ext_resource type="Script" uid="uid://dkh8bjt0jddcw" path="res://Scripts/Weapon.cs" id="2_xvawi"]
-[ext_resource type="PackedScene" uid="uid://c4wdpwsxv1hpm" path="res://scenes/Casing.tscn" id="3_dky1e"]
-[ext_resource type="PackedScene" uid="uid://cda1kj2h6u0cm" path="res://scenes/BulletHole.tscn" id="4_tojux"]
-[ext_resource type="AudioStream" uid="uid://dan6mrpyptwg3" path="res://sound/AK6.mp3" id="5_sk03q"]
+[ext_resource type="PackedScene" uid="uid://bxwjhumrn6yq0" path="res://Models/akms.glb" id="1_sk03q"]
+[ext_resource type="Script" uid="uid://dkh8bjt0jddcw" path="res://Scripts/Weapons/Weapon.cs" id="2_xvawi"]
+[ext_resource type="PackedScene" uid="uid://c4wdpwsxv1hpm" path="res://Prefabs/Casing.tscn" id="3_dky1e"]
+[ext_resource type="PackedScene" uid="uid://cda1kj2h6u0cm" path="res://Prefabs/BulletHole.tscn" id="4_tojux"]
+[ext_resource type="AudioStream" uid="uid://dan6mrpyptwg3" path="res://Sounds/AK6.mp3" id="5_sk03q"]
 [ext_resource type="PackedScene" uid="uid://dlhix5klju7p8" path="res://Prefabs/MuzzleFlash.tscn" id="6_qgr7a"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ju7kl"]
@@ -13,39 +13,30 @@ size = Vector3(1.43201, 1.15643, 1.76312)
 [node name="WeaponPhysicsBody" type="RigidBody3D"]
 mass = 2.5
 
-[node name="akms" parent="." node_paths=PackedStringArray("BulletHole", "Collider", "RayCast3DAim", "DelayTimer", "AudioStreamPlayer", "CassingSpawner", "Effect") instance=ExtResource("1_sk03q")]
+[node name="akms" parent="." node_paths=PackedStringArray("AudioStreamPlayer", "Collider") instance=ExtResource("1_sk03q")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 script = ExtResource("2_xvawi")
 Damage = 30
 Knockback = -1.0
 MaxAmmo = 30
 Ammo = 30
-BulletHole = NodePath("Bullet Exit")
-Collider = NodePath("../CollisionShape3D")
-RayCast3DAim = NodePath("Bullet Exit/AimCast")
 RecoilAmmount = Vector3(0.2, 0.2, 0.1)
 RoundsPerMinute = 600.0
 WeaponFireMode = 2
-DelayTimer = NodePath("DelayTimer")
 WeaponOffset = Vector3(0.42, -0.6, -0.6)
-AudioStreamPlayer = NodePath("AudioStreamPlayer3D")
 AudioPitchStep = 0.005
+BulletVelocity = 715.0
+AudioStreamPlayer = NodePath("AudioStreamPlayer3D")
 Casing = ExtResource("3_dky1e")
 BulletCrater = ExtResource("4_tojux")
-BulletVelocity = 715.0
-CassingSpawner = NodePath("Casing")
-Effect = NodePath("MuzzleFlash")
+Collider = NodePath("../CollisionShape3D")
 
 [node name="Bullet Exit" type="Node3D" parent="akms"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.995123, 0.209074, 4.34982e-08)
 
-[node name="AimCast" type="RayCast3D" parent="akms/Bullet Exit"]
-transform = Transform3D(1, 0, 0, -2.18279e-11, 1, -2.98087e-10, 9.31323e-10, -1.46656e-11, 1, 0, 0, 0)
+[node name="AimCast" type="RayCast3D" parent="akms"]
+transform = Transform3D(1, 0, 0, -2.18279e-11, 1, -2.98087e-10, 9.31323e-10, -1.46656e-11, 1, 0.995123, 0.209074, 4.34982e-08)
 target_position = Vector3(0, 0, 0)
-
-[node name="DelayTimer" type="Timer" parent="akms"]
-wait_time = 0.5
-one_shot = true
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="akms"]
 stream = ExtResource("5_sk03q")

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bbhuvyyk3xpen"
+path="res://.godot/imported/Не Стреляй - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-f191e2be3c2d234b3aafb91c6c0275a7.mp3str"
+
+[deps]
+
+source_file="res://Radio/ВИА Восток, Концерт в Афганистане 1988г/Не Стреляй - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3"
+dest_files=["res://.godot/imported/Не Стреляй - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-f191e2be3c2d234b3aafb91c6c0275a7.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

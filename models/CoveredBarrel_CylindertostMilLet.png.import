@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dlf18t2rufk75"
-path.s3tc="res://.godot/imported/CoveredBarrel_CylindertostMilLet.png-526472aebd8ba24a8c2cb46a1c72d32f.s3tc.ctex"
+path.s3tc="res://.godot/imported/CoveredBarrel_CylindertostMilLet.png-4d7397457db8d6f4ce6e1daf0618fe08.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://models/CoveredBarrel_CylindertostMilLet.png"
-dest_files=["res://.godot/imported/CoveredBarrel_CylindertostMilLet.png-526472aebd8ba24a8c2cb46a1c72d32f.s3tc.ctex"]
+source_file="res://Models/CoveredBarrel_CylindertostMilLet.png"
+dest_files=["res://.godot/imported/CoveredBarrel_CylindertostMilLet.png-4d7397457db8d6f4ce6e1daf0618fe08.s3tc.ctex"]
 
 [params]
 

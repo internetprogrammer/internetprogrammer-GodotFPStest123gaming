@@ -1,6 +1,0 @@
-[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://djp0gygpuik0e"]
-
-[ext_resource type="Texture2D" uid="uid://dmfpait4quoik" path="res://images/StonewallCastleTextureSeemless.png" id="1_qvhxm"]
-
-[resource]
-albedo_texture = ExtResource("1_qvhxm")

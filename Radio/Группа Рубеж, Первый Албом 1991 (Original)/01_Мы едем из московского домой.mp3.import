@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://da6bht88ah2ru"
+path="res://.godot/imported/01_Мы едем из московского домой.mp3-2a34c42fbf18c348b775659cc4a7c468.mp3str"
+
+[deps]
+
+source_file="res://Radio/Группа Рубеж, Первый Албом 1991 (Original)/01_Мы едем из московского домой.mp3"
+dest_files=["res://.godot/imported/01_Мы едем из московского домой.mp3-2a34c42fbf18c348b775659cc4a7c468.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

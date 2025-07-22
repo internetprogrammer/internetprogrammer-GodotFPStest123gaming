@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://c0qwqwaq7rgv8"
-path="res://.godot/imported/GemmyIsrael.glb-8cafd71999525e01337e9a80fa6bfa4c.scn"
+path="res://.godot/imported/GemmyIsrael.glb-dd89de842ad6e1add20c2a15d23dec67.scn"
 
 [deps]
 
-source_file="res://models/GemmyIsrael.glb"
-dest_files=["res://.godot/imported/GemmyIsrael.glb-8cafd71999525e01337e9a80fa6bfa4c.scn"]
+source_file="res://Models/GemmyIsrael.glb"
+dest_files=["res://.godot/imported/GemmyIsrael.glb-dd89de842ad6e1add20c2a15d23dec67.scn"]
 
 [params]
 

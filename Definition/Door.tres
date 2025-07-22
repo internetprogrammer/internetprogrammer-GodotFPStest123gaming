@@ -1,7 +1,6 @@
-[gd_resource type="Resource" script_class="FuncGodotFGDSolidClass" load_steps=3 format=3 uid="uid://lhen8ba5t86i"]
+[gd_resource type="Resource" script_class="FuncGodotFGDSolidClass" load_steps=2 format=3 uid="uid://lhen8ba5t86i"]
 
 [ext_resource type="Script" uid="uid://2vtxmh8ubks5" path="res://addons/func_godot/src/fgd/func_godot_fgd_solid_class.gd" id="1_w6ahh"]
-[ext_resource type="Script" uid="uid://d26k0ndjup7od" path="res://Scripts/Door.cs" id="2_22n2a"]
 
 [resource]
 script = ExtResource("1_w6ahh")
@@ -22,7 +21,6 @@ add_vertex_metadata = false
 add_face_position_metadata = false
 add_face_normal_metadata = false
 add_collision_shape_face_range_metadata = false
-script_class = ExtResource("2_22n2a")
 classname = "func_door"
 description = "door o algo"
 func_godot_internal = false

@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bus3swoe670rt"
-path.s3tc="res://.godot/imported/box455_qcydnman.jpg-6f9278dd5d4b5303061fe3fb188e309f.s3tc.ctex"
+path.s3tc="res://.godot/imported/box455_qcydnman.jpg-fc17996f24893c75bf8372ce205df069.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://models/box455_qcydnman.jpg"
-dest_files=["res://.godot/imported/box455_qcydnman.jpg-6f9278dd5d4b5303061fe3fb188e309f.s3tc.ctex"]
+source_file="res://Models/box455_qcydnman.jpg"
+dest_files=["res://.godot/imported/box455_qcydnman.jpg-fc17996f24893c75bf8372ce205df069.s3tc.ctex"]
 
 [params]
 

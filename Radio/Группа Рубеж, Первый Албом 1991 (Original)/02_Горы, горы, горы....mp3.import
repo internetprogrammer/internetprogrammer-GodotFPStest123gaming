@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b0iehjkkq1we5"
+path="res://.godot/imported/02_Горы, горы, горы....mp3-6b422d8c4451544b34067f60ae2017da.mp3str"
+
+[deps]
+
+source_file="res://Radio/Группа Рубеж, Первый Албом 1991 (Original)/02_Горы, горы, горы....mp3"
+dest_files=["res://.godot/imported/02_Горы, горы, горы....mp3-6b422d8c4451544b34067f60ae2017da.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

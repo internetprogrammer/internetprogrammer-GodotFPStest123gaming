@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bvqvt6ft7crb4"
+path="res://.godot/imported/Старый Дом - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-b5cca37ccf83a24d042f38c300589fff.mp3str"
+
+[deps]
+
+source_file="res://Radio/ВИА Восток, Концерт в Афганистане 1988г/Старый Дом - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3"
+dest_files=["res://.godot/imported/Старый Дом - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-b5cca37ccf83a24d042f38c300589fff.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

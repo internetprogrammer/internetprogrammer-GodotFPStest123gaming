@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://tkv2fh7g2nsf"
+path="res://.godot/imported/9-Келагайское Танго.mp3-3e81f614c0ea36a6f69c5871b17674ac.mp3str"
+
+[deps]
+
+source_file="res://Radio/Группа Контраст, Последний Контраст (1988)/9-Келагайское Танго.mp3"
+dest_files=["res://.godot/imported/9-Келагайское Танго.mp3-3e81f614c0ea36a6f69c5871b17674ac.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

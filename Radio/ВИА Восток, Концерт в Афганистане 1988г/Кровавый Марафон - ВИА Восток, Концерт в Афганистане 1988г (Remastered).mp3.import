@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://xe7k5mne11xm"
+path="res://.godot/imported/Кровавый Марафон - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-413b5fbfcafff84672b31d5a6b9c95aa.mp3str"
+
+[deps]
+
+source_file="res://Radio/ВИА Восток, Концерт в Афганистане 1988г/Кровавый Марафон - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3"
+dest_files=["res://.godot/imported/Кровавый Марафон - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-413b5fbfcafff84672b31d5a6b9c95aa.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://4qgvj5pfxgyd"
+path="res://.godot/imported/11_Кому-то коньячок и осетринка.mp3-454e84cfe2d5f6e7254afc0cfd3a6d24.mp3str"
+
+[deps]
+
+source_file="res://Radio/Группа Рубеж, Первый Албом 1991 (Original)/11_Кому-то коньячок и осетринка.mp3"
+dest_files=["res://.godot/imported/11_Кому-то коньячок и осетринка.mp3-454e84cfe2d5f6e7254afc0cfd3a6d24.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

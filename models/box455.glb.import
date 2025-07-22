@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cl0ql7snfdh4g"
-path="res://.godot/imported/box455.glb-a6af02e43649d2578e261f4ed0189704.scn"
+path="res://.godot/imported/box455.glb-ec4569b1f6089bbe8167b1cb367d39a1.scn"
 
 [deps]
 
-source_file="res://models/box455.glb"
-dest_files=["res://.godot/imported/box455.glb-a6af02e43649d2578e261f4ed0189704.scn"]
+source_file="res://Models/box455.glb"
+dest_files=["res://.godot/imported/box455.glb-ec4569b1f6089bbe8167b1cb367d39a1.scn"]
 
 [params]
 

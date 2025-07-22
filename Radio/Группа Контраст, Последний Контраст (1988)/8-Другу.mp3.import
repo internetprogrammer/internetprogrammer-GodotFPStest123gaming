@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://beqygvoq5srhd"
+path="res://.godot/imported/8-Другу.mp3-239ef1909d210288b42d4d1ab4966483.mp3str"
+
+[deps]
+
+source_file="res://Radio/Группа Контраст, Последний Контраст (1988)/8-Другу.mp3"
+dest_files=["res://.godot/imported/8-Другу.mp3-239ef1909d210288b42d4d1ab4966483.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

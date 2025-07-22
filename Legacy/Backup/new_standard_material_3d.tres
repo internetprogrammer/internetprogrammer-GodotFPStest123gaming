@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://es4w1og11t40"]
+
+[ext_resource type="Texture2D" uid="uid://dfpdsewce6r23" path="res://Legacy/images/Andreas_Papandreou_(1968)_2_crop.png" id="1_obfvd"]
+
+[resource]
+albedo_texture = ExtResource("1_obfvd")
+emission_enabled = true
+emission = Color(0, 0.14902, 0, 1)
+emission_energy_multiplier = 12.9
+emission_texture = ExtResource("1_obfvd")
+backlight = Color(8.7598e-06, 0.975435, 0.658981, 1)
+backlight_texture = ExtResource("1_obfvd")

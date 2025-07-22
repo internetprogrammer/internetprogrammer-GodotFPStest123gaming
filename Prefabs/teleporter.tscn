@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c5lyvqwher0rx"]
 
-[ext_resource type="Script" uid="uid://cr831sbucnxpr" path="res://Teleporter.cs" id="1_sxq2c"]
+[ext_resource type="Script" uid="uid://cr831sbucnxpr" path="res://Scripts/World Objects/Teleporter.cs" id="1_sxq2c"]
 [ext_resource type="Material" uid="uid://c0gj2oqi287fb" path="res://assets/textures/world/BoSinn_64.tres" id="2_eiv08"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6ojv1"]

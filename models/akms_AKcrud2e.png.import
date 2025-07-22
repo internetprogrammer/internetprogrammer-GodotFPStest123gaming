@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dhhkhke6gyp0s"
-path.s3tc="res://.godot/imported/akms_AKcrud2e.png-7f8fd6009d50ede6a922ab301b39d4d8.s3tc.ctex"
+path.s3tc="res://.godot/imported/akms_AKcrud2e.png-74be8bec4d032da1e21bf35f99bfbf8e.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://models/akms_AKcrud2e.png"
-dest_files=["res://.godot/imported/akms_AKcrud2e.png-7f8fd6009d50ede6a922ab301b39d4d8.s3tc.ctex"]
+source_file="res://Models/akms_AKcrud2e.png"
+dest_files=["res://.godot/imported/akms_AKcrud2e.png-74be8bec4d032da1e21bf35f99bfbf8e.s3tc.ctex"]
 
 [params]
 

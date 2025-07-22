@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://gl7yfqhg25eq"
+path="res://.godot/imported/2-Легенда Килагайской Долины.mp3-7e86e6c40b858f7620dd21a744acc7d9.mp3str"
+
+[deps]
+
+source_file="res://Radio/Группа Контраст, Последний Контраст (1988)/2-Легенда Килагайской Долины.mp3"
+dest_files=["res://.godot/imported/2-Легенда Килагайской Долины.mp3-7e86e6c40b858f7620dd21a744acc7d9.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

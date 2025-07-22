@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bifedp70pgpr4"
-path.s3tc="res://.godot/imported/CoveredBarrelBlue_Cylindertost.png-84d01ff14e7d62c5a3fa3a47b0b49cb2.s3tc.ctex"
+path.s3tc="res://.godot/imported/CoveredBarrelBlue_Cylindertost.png-43e5c47ac1f11131e728a862f77f5781.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://models/CoveredBarrelBlue_Cylindertost.png"
-dest_files=["res://.godot/imported/CoveredBarrelBlue_Cylindertost.png-84d01ff14e7d62c5a3fa3a47b0b49cb2.s3tc.ctex"]
+source_file="res://Models/CoveredBarrelBlue_Cylindertost.png"
+dest_files=["res://.godot/imported/CoveredBarrelBlue_Cylindertost.png-43e5c47ac1f11131e728a862f77f5781.s3tc.ctex"]
 
 [params]
 

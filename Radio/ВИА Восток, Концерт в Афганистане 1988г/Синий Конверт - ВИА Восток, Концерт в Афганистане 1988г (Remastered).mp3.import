@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dabvxmlxq8o3"
+path="res://.godot/imported/Синий Конверт - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-f9903ecac042b1ac94d12590b9286ff9.mp3str"
+
+[deps]
+
+source_file="res://Radio/ВИА Восток, Концерт в Афганистане 1988г/Синий Конверт - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3"
+dest_files=["res://.godot/imported/Синий Конверт - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-f9903ecac042b1ac94d12590b9286ff9.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

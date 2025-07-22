@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://qumj2ulltqk5"
-path.s3tc="res://.godot/imported/trash can_wow2.png-cfe2a5ec470cd3208cbb6a0dc31735c4.s3tc.ctex"
+path.s3tc="res://.godot/imported/trash can_wow2.png-0252ed19b82b454da2e5d0c52c56eba2.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://models/trash can_wow2.png"
-dest_files=["res://.godot/imported/trash can_wow2.png-cfe2a5ec470cd3208cbb6a0dc31735c4.s3tc.ctex"]
+source_file="res://Models/trash can_wow2.png"
+dest_files=["res://.godot/imported/trash can_wow2.png-0252ed19b82b454da2e5d0c52c56eba2.s3tc.ctex"]
 
 [params]
 

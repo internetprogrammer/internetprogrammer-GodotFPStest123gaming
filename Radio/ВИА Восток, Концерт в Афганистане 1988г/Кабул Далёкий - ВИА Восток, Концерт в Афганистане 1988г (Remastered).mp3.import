@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://d2lthcs1ekeie"
+path="res://.godot/imported/Кабул Далёкий - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-0d207571e177db33fd9a025c035bf66e.mp3str"
+
+[deps]
+
+source_file="res://Radio/ВИА Восток, Концерт в Афганистане 1988г/Кабул Далёкий - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3"
+dest_files=["res://.godot/imported/Кабул Далёкий - ВИА Восток, Концерт в Афганистане 1988г (Remastered).mp3-0d207571e177db33fd9a025c035bf66e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

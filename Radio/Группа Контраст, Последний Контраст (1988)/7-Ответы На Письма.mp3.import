@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dfcf21smm2v0c"
+path="res://.godot/imported/7-Ответы На Письма.mp3-1dc3ea812fad992011985e02cf8d3076.mp3str"
+
+[deps]
+
+source_file="res://Radio/Группа Контраст, Последний Контраст (1988)/7-Ответы На Письма.mp3"
+dest_files=["res://.godot/imported/7-Ответы На Письма.mp3-1dc3ea812fad992011985e02cf8d3076.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

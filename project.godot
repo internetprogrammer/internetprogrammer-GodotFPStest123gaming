@@ -12,9 +12,9 @@ config_version=5
 
 config/name="CharacterControllerCSharp"
 config/version="0.1"
-run/main_scene="res://scenes/world.tscn"
+run/main_scene="uid://cunf43wviu6dp"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
-config/icon="res://images/icon.svg"
+config/icon="res://Legacy/images/icon.svg"
 
 [display]
 
@@ -141,3 +141,7 @@ zoom={
 
 3d/physics_engine="Jolt Physics"
 3d/default_gravity=14.3
+
+[rendering]
+
+occlusion_culling/use_occlusion_culling=true

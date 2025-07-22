@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ddmcmwpxdcvlb"
+path="res://.godot/imported/13_Песня пулемётчика.mp3-6e2e5a8ca9347805720178464fb6cf78.mp3str"
+
+[deps]
+
+source_file="res://Radio/Группа Рубеж, Первый Албом 1991 (Original)/13_Песня пулемётчика.mp3"
+dest_files=["res://.godot/imported/13_Песня пулемётчика.mp3-6e2e5a8ca9347805720178464fb6cf78.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

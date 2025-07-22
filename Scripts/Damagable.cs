@@ -1,13 +1,10 @@
 ﻿using Godot;
-using System;
-using System.Net;
-using static Godot.TextServer;
 
 public partial class Damagable : Node3D
 {
 
-    [Export]public float Health = 100;
-    [Export]public float Armour = 0;
+    [Export] public float Health = 100;
+    [Export] public float Armour = 0;
     public Vector3 velocity;
     [Export] public PackedScene Effect;
     [Export] public Vector3 EffectSpawnOffset = Vector3.Zero;
@@ -52,7 +49,7 @@ public partial class Damagable : Node3D
             e.GlobalPosition = ((Node3D)GetParent()).GlobalPosition;
             e.Emitting = true;
         }
-        else if(EffectScenePath != "")
+        else if (EffectScenePath != "")
         {
             Effect = GD.Load<PackedScene>(EffectScenePath);
             GpuParticles3D e = Effect.Instantiate<GpuParticles3D>();
@@ -60,7 +57,7 @@ public partial class Damagable : Node3D
             e.GlobalPosition = ((Node3D)GetParent()).GlobalPosition;
             e.Emitting = true;
         }
-            QueueFree();
+        QueueFree();
     }
     public void KillTarget(Node3D character)
     {
@@ -70,7 +67,7 @@ public partial class Damagable : Node3D
             Node3D player = GetNode<Node3D>("/root/World/Player");
 
             GpuParticles3D e = Effect.Instantiate<GpuParticles3D>();
-           GetNode<Node3D>("/root/World").AddChild(e);
+            GetNode<Node3D>("/root/World").AddChild(e);
             e.GlobalPosition = ((Node3D)GetParent()).GlobalPosition;
             e.LookAt(player.GlobalPosition);
             e.Emitting = true;
@@ -83,7 +80,8 @@ public partial class Damagable : Node3D
             e.GlobalPosition = ((Node3D)GetParent()).GlobalPosition;
             e.Emitting = true;
         }
-        if (GetParent() is Enemy enemy){
+        if (GetParent() is Enemy enemy)
+        {
             if (enemy.weaponHandler.HasWeapon) enemy.weaponHandler.DropWeapon();
         }
         character.QueueFree();
