@@ -1,34 +1,64 @@
 using Godot;
 
-public partial class NPC : DamagableCharacter
+public abstract partial class NPC : DamagableCharacter
 {
+    public const float PanickedRunDistance = 3f;
+    public const float NPCTurnRate = 10f;
+    [ExportGroup("Standard Movement")]
     [Export] public float Speed = 4.0f;
     [Export] public float RunMultiplier = 2.0f;
-    public const float PanickedRunDistance = 3f;
     [Export] public float JumpVelocity = 4.5f;
+    [ExportGroup("Standard Behaviour")]
     [Export] public int sight = 25;// 0 - 100
+    [Export] public bool TooChuddedToCare = false;// stops panic
+
+    [ExportGroup("BS")]
     [Export] NavigationAgent3D NavigationAgent;
+    [Export] public RayCast3D aimCast;
+
     Vector3 targetRotation;
     Vector3 lerpTargetRotation;
-    [Export] bool TooChuddedToCare = false;//used for civilians that shouldnt care about shooting, this logic can be used to set a response to player shooting
-    [Export] public RayCast3D aimCast;
+
     public const float PanicMultiplier = 0.1f;
-    public RandomNumberGenerator PanicGenerator;
+
+    public RandomNumberGenerator PanicGenerator = new RandomNumberGenerator();
+    public RandomNumberGenerator WanderGenerator = new RandomNumberGenerator();
+
     public int UnpanicValue = 10;
     public int MinimumPanicRunDistance = 3;
+
     public int PanicValue = 0;
+
     bool IsPanicked = false;
     public bool IsRunning = false;
+
     float ActualSpeed = 0;
+    public Vector3 TargetRotation { get;  set; }// rotation that the player ought to be 
+
+
 
     public enum State
     {
-        Standing, Wandering, LimitedWandering, Panicked, Assaulting, Retreat, Guard, Patrol
+        Aware,
+        Panicked,
+        Searching,
+        Moving,
+        Engaging,
+        Surrender
     }
-    public State CurrentState;
+    public enum Command
+    {
+        Standing, Wandering, LimitedWandering,Assaulting, Retreat, Guard, Patrol
+    }
+    public State CurrentState = State.Aware;
     State HashedState;
+    public override void _Ready()
+    {
+        PanicGenerator.Randomize();
+    }
     public void SetPanic()
     {
+        if (TooChuddedToCare) return;
         if (CurrentState != State.Panicked)
         {
             Panic();
@@ -43,7 +73,6 @@ public partial class NPC : DamagableCharacter
             HashedState = CurrentState;
             CurrentState = State.Panicked;
         }
-        GD.Print("niggers");
         float x = PanicGenerator.RandfRange(-PanickedRunDistance, PanickedRunDistance);
         float y = PanicGenerator.RandfRange(-PanickedRunDistance, PanickedRunDistance);
         if (x < MinimumPanicRunDistance && x > 0) { x = MinimumPanicRunDistance; }
@@ -53,11 +82,11 @@ public partial class NPC : DamagableCharacter
         Vector3 target = new(x, 0, y);
         Navigate(GlobalPosition + target);
         IsPanicked = false;
-        if (PanicGenerator.RandiRange(0, 100) < UnpanicValue) { IsRunning = false; CurrentState = HashedState; GD.Print("niggers2"); }
+        if (PanicGenerator.RandiRange(0, 100) < UnpanicValue) { IsRunning = false; CurrentState = HashedState; }
     }
     public void Navigate(Vector3 target)
     {
-        Vector3 direction = (target - GlobalPosition);
+        Vector3 direction = (target - GlobalPosition); 
         direction.Y = 0; // Prevent vertical tilting
 
         if (direction.LengthSquared() > 0.01f)
@@ -70,20 +99,21 @@ public partial class NPC : DamagableCharacter
     {
         NavigationAgent.TargetPosition = GlobalPosition;
     }
-    public override void _Ready()
-    {
-    }
+
     public override void _PhysicsProcess(double delta)
     {
         //GD.Print(CurrentState, GetWhetherReachedDestination());
+
         if (CurrentState == State.Panicked && GetWhetherReachedDestination() && !IsPanicked)// twitching that doesnt look good btw so plis fix
         {
             Panic();
         }
         ActualSpeed = Speed;
         if (IsRunning) ActualSpeed *= RunMultiplier;
+
         Vector3 velocity = Velocity;
         Vector3 direction = (NavigationAgent.GetNextPathPosition() - GlobalPosition).Normalized();
+
         //GD.Print("pathlocation:", NavigationAgent.GetNextPathPosition() ,"\n position:", GlobalPosition , "\n not normalized:", NavigationAgent.GetNextPathPosition() - GlobalPosition,"\n",(NavigationAgent.GetNextPathPosition() - GlobalPosition).Normalized() );
         velocity = velocity.Lerp(direction * ActualSpeed, (float)delta * 14.0f) + (GetGravity() * (float)delta);
         Velocity = velocity;
@@ -97,7 +127,8 @@ public partial class NPC : DamagableCharacter
     }
     public bool GetWhetherReachedDestination()
     {
-        if (NavigationAgent.GetNextPathPosition() - GlobalPosition < (Vector3.One / 2)) { return true; }
+        float distance = (NavigationAgent.GetNextPathPosition() - GlobalPosition).Length();
+        if (distance < 0.7f) { return true; }
         return false;
     }
 }

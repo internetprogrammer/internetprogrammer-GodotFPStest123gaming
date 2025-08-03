@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://b0a1beb0a0t02"]
 
-[ext_resource type="PackedScene" uid="uid://bxwjhumrn6yq0" path="res://Models/akms.glb" id="1_1ibuc"]
 [ext_resource type="Script" uid="uid://7fsajxev28wy" path="res://Scripts/Weapons/Weaponrb.cs" id="1_2aoco"]
 [ext_resource type="PackedScene" uid="uid://c4wdpwsxv1hpm" path="res://Prefabs/Casing.tscn" id="2_8qstr"]
 [ext_resource type="PackedScene" uid="uid://cda1kj2h6u0cm" path="res://Prefabs/BulletHole.tscn" id="3_qwtdb"]
 [ext_resource type="AudioStream" uid="uid://dan6mrpyptwg3" path="res://Sounds/AK6.mp3" id="5_1jngl"]
+[ext_resource type="PackedScene" uid="uid://bi6hefu3x3j26" path="res://Models/AKMS1.glb" id="6_1ibuc"]
 [ext_resource type="PackedScene" uid="uid://dlhix5klju7p8" path="res://Prefabs/MuzzleFlash.tscn" id="6_stbek"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ju7kl"]
@@ -42,7 +42,7 @@ transform = Transform3D(-2.18557e-10, 0, 0.005, 0, 0.005, 0, -0.005, 0, -2.18557
 [node name="MuzzleFlash" parent="." instance=ExtResource("6_stbek")]
 transform = Transform3D(-0.05, 0, -7.54979e-09, 0, 0.05, 0, 7.54979e-09, 0, -0.05, -2.27374e-13, 0.218497, -1.02097)
 
-[node name="akms" parent="." instance=ExtResource("1_1ibuc")]
+[node name="AKMS1" parent="." instance=ExtResource("6_1ibuc")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

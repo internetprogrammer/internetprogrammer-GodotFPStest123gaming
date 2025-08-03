@@ -2,10 +2,10 @@ using Godot;
 
 public partial class Civilian : NPC
 {
-    RandomNumberGenerator WanderGenerator;
 
 
-    Timer WanderCheckTime;
+
+    Timer WanderCheckTime = new Timer();
     float TimeBetweenWanderCheck = 7;
     float WanderAmount = 6.0f;
     float DePanicTime = 30f;// use this with another timer
@@ -15,19 +15,18 @@ public partial class Civilian : NPC
         InitializeDamagableCharacter();
 
         AddChild(DamageHandler);
-        CurrentState = State.Wandering;
-        WanderCheckTime = new Timer();
+
         AddChild(WanderCheckTime);
-        PanicGenerator = new RandomNumberGenerator();
+
         PanicGenerator.Randomize();
-        WanderGenerator = new RandomNumberGenerator();
         WanderGenerator.Randomize();
+
         WanderCheckTime.Timeout += WanderTimerTimeout;
         WanderCheckTime.Start(TimeBetweenWanderCheck);
     }
     void WanderAround()
     {
-        if (!(CurrentState == State.Wandering)) { return; }
+        if (!(CurrentState == State.Aware)) { return; }
         if (WanderGenerator.RandiRange(0, 1) == 1)
         {
             float x = WanderGenerator.RandfRange(-WanderAmount, WanderAmount);

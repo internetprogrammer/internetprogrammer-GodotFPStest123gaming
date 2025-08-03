@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://c13d2qb3l2u46"]
+
+[ext_resource type="Script" uid="uid://dr8se3kj7bs3f" path="res://Scripts/AI/SoundEvent.cs" id="1_3tf6w"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_c3h3m"]
+radius = 5.0
+
+[node name="SoundEvent" type="Area3D"]
+script = ExtResource("1_3tf6w")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_c3h3m")
+debug_color = Color(0.0741997, 0.590533, 0.739554, 0.42)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="CollisionShape3D"]
+visible = false

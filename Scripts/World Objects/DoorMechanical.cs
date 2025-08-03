@@ -9,7 +9,7 @@ public partial class DoorMechanical : InteractableObject
     [Export] public int DoorID = 0;
 
     public Damagable DamageHandler;
-    [Export] bool Damageable = false;
+    [Export] public bool Damageable = false;
     [Export] public string EffectPath = "res://Prefabs/WoodParticle.tscn";
 
     [Export] public float Health = 100;

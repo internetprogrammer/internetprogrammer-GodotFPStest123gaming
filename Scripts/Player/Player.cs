@@ -10,6 +10,7 @@ public partial class Player : DamagableCharacter
     private const float StandardThrownWeaponRBAngularVelocity = 20f;
     private const float StandardThrownWeaponRBLinearVelocity = 10f;
     private const float HeadBobValue = 0.75f;
+    private const float CameraYOffset = 0.0f;
 
     //Movement
     [ExportGroup("Standard Movement")]
@@ -46,10 +47,10 @@ public partial class Player : DamagableCharacter
     [ExportGroup("Weapon Mechanics")]
     public int weaponNum = 1;
     //ammo the player has
-    public int[] WeaponAmmo = [120,120];
+    public int[] WeaponAmmo = [120, 120];
 
     [Export] Weaponrb[] Weapons = new Weaponrb[2];
-    
+
 
     [Export] public float WeaponRotationAmount = 8;
     [Export] public float WeaponSwayMultiplier = 1;
@@ -141,9 +142,9 @@ public partial class Player : DamagableCharacter
             if (head.GetChild(0) is Camera3D cameraLocal) camera = cameraLocal; else GD.PrintErr("camera is null!");
             if (head.GetChild(1) is Node3D grablocal) GrabPoint = grablocal; else GD.PrintErr("grabpoint is null!");
             if (head.GetChild(2) is Node3D weaponLocal) WeaponNode = weaponLocal; else GD.PrintErr("weaponnode is null!");
-            if (head.GetChild(3) is RayCast3D grabcast ) RayCastCheckForObject = grabcast; else GD.PrintErr("grab ray cast is null!");
-            if (head.GetChild(4) is RayCast3D headaimcast ) RayCastHeadAim = headaimcast; else GD.PrintErr("head aim ray cast is null!");
-            if (head.GetChild(5) is RayCast3D kickaimcast ) RayCastKick = kickaimcast; else GD.PrintErr("kick ray cast is null!");
+            if (head.GetChild(3) is RayCast3D grabcast) RayCastCheckForObject = grabcast; else GD.PrintErr("grab ray cast is null!");
+            if (head.GetChild(4) is RayCast3D headaimcast) RayCastHeadAim = headaimcast; else GD.PrintErr("head aim ray cast is null!");
+            if (head.GetChild(5) is RayCast3D kickaimcast) RayCastKick = kickaimcast; else GD.PrintErr("kick ray cast is null!");
 
         }
         else GD.PrintErr("head is null!");
@@ -198,7 +199,7 @@ public partial class Player : DamagableCharacter
         {
             HeadMovementTime += (float)delta * Velocity.Length();
             head.Position = new Vector3(Mathf.Cos(HeadMovementTime * HeadMovementFrequency / 2) * HeadMovementAmount + ActualLeanOffset,
-                        Mathf.Sin(HeadMovementTime * HeadMovementFrequency) * HeadMovementAmount + HeadBobValue,
+                        Mathf.Sin(HeadMovementTime * HeadMovementFrequency) * HeadMovementAmount + HeadBobValue + CameraYOffset,
                         0);
         }
     } // find a way to edit the transform for this
@@ -206,7 +207,7 @@ public partial class Player : DamagableCharacter
     {
         if (WeaponOffset == Vector3.Zero && (Weapons[0] != null || Weapons[1] != null))
         {
-            WeaponOffset = Weapons[weaponNum - 1].WeaponOffset;   
+            WeaponOffset = Weapons[weaponNum - 1].WeaponOffset;
         }
         WeaponSwayTime += (float)delta * Velocity.Length();
         if (IsOnFloor())// so that no movement is done
@@ -234,12 +235,12 @@ public partial class Player : DamagableCharacter
 
     }
     // handle anything that has to do with movement
-    private void HandleMovement(Vector3 velocity, double delta)
+    private void HandleMovement(Vector3 velocity, double delta) // update the water handle movement with this 
     {
         // Handle Jump
         if (Input.IsActionJustPressed("jump") && IsOnFloor())
         {
-            JumpSound.Play();
+            JumpSound.play();
             velocity.Y += JumpVelocity;
         }
         if (Input.IsActionPressed("run")) // || IsRunning == true for toggleable with the addition of a untoggle function
@@ -277,10 +278,11 @@ public partial class Player : DamagableCharacter
         HeadRotation(direction, delta);
         if (direction != Vector3.Zero)
         {
-            if (!WalkSound.Playing) {
+            if (!WalkSound.Playing)
+            {
                 WalkSound.Playing = true;
                 GD.Randomize();
-                WalkSound.PitchScale = (WalkSoundPitch + (GD.Randf() / 5f) - 0.2f + RunActualIncrease); 
+                WalkSound.PitchScale = (WalkSoundPitch + (GD.Randf() / 5f) - 0.2f + RunActualIncrease);
             }
             //the regular movement function with small additions for spice in the game
             velocity.X = direction.X * Speed * RunMultiplierActual * CrouchMultiplierActual * (float)delta;
@@ -414,48 +416,49 @@ public partial class Player : DamagableCharacter
     }
     void KickI()
     {
-        if (Input.IsActionJustPressed("kick") && !Grabbing && CanKick)
-        {
-            CanKick = false;
-            KickTimer.Start(NextKickDelay);
-            Node3D tempNode = (Node3D)GetColliderDamagable();
-            //switchbros seething at the fact that i can else if for days and its still performant since it runs only once, scriptkiddies buckbroken
-            if (tempNode == null) return;
-            
-                KickSound.Play();
-                switch (tempNode) { // dupe this for bullets and weapons
-                    case Enemy enemy:
-                        enemy.DamageHandler.DamageTarget(KickDamage, KickPenetration, tempNode);
-                        enemy.Velocity = -GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickKnockback);
-                        break;
-                    case RigidBody3D rigidbody:
-                        rigidbody.LinearVelocity += -GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickKnockback / rigidbody.Mass);
-                        break;
-                    case Damagable damagable:
-                        damagable.DamageTarget(KickDamage, KickPenetration);
-                        if (tempNode is RigidBody3D rigid)
-                        {
-                            rigid.LinearVelocity += -GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickKnockback / rigid.Mass);
-                        }
-                        break;
-                    case Door door when door.DamageHandler != null:
-                        door.DamageHandler.DamageTarget(KickDamage, KickPenetration, tempNode);
-                        break;
-                    case DoorMechanical doormech when doormech.DamageHandler != null:
-                        doormech.DamageHandler.DamageTarget(KickDamage, KickPenetration, tempNode);
-                        break;
-                    case Civilian civilian:
-                        civilian.DamageHandler.DamageTarget(KickDamage, KickPenetration, tempNode);
-                        civilian.SetPanic();
-                        civilian.Velocity = -GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickKnockback);
-                        break;
-                    case Node3D:
-                        Velocity += GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickBoost);
-                        break;
+        if (!(Input.IsActionJustPressed("kick") && !Grabbing && CanKick)) return;
+
+        CanKick = false;
+        KickTimer.Start(NextKickDelay);
+        Node3D tempNode = (Node3D)GetColliderDamagable();
+        //switchbros seething at the fact that i can else if for days and its still performant since it runs only once, scriptkiddies buckbroken
+        if (tempNode == null) return;
+
+        KickSound.play();
+        switch (tempNode)
+        { // dupe this for bullets and weapons
+            case Enemy enemy:
+                enemy.DamageHandler.DamageTarget(KickDamage, KickPenetration, tempNode);
+                enemy.Velocity = -GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickKnockback);
+                break;
+            case RigidBody3D rigidbody:
+                rigidbody.LinearVelocity += -GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickKnockback / rigidbody.Mass);
+                break;
+            case Damagable damagable:
+                damagable.DamageTarget(KickDamage, KickPenetration);
+                if (tempNode is RigidBody3D rigid)
+                {
+                    rigid.LinearVelocity += -GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickKnockback / rigid.Mass);
                 }
+                break;
+            case Door door when door.DamageHandler != null:
+                door.DamageHandler.DamageTarget(KickDamage, KickPenetration, tempNode);
+                break;
+            case DoorMechanical doormech when doormech.DamageHandler != null:
+                doormech.DamageHandler.DamageTarget(KickDamage, KickPenetration, tempNode);
+                break;
+            case Civilian civilian:
+                civilian.DamageHandler.DamageTarget(KickDamage, KickPenetration, tempNode);
+                civilian.SetPanic();
+                civilian.Velocity = -GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickKnockback);
+                break;
+            case Node3D:
+                Velocity += GlobalTransform.Basis.Z * (KickDamage * (KickPenetration + 1) * KickBoost);
+                break;
         }
+
     }
-    void ShootI(ref Weaponrb[] Weapons,ref Weaponrb CurrentWeapon)
+    void ShootI(ref Weaponrb[] Weapons, ref Weaponrb CurrentWeapon)
     {
         if (Weapons[weaponNum - 1].WeaponFireMode == Weaponrb.FireMode.SemiAuto)
         {
@@ -474,17 +477,16 @@ public partial class Player : DamagableCharacter
     }
     void ThrowI(ref Weaponrb Weapon)
     {
-        if (Input.IsActionPressed("throwAway") && !IsReloading)
-        {
-            ThrowWeapon(ref Weapons[weaponNum - 1]); // throws the weapon and removes its reference 
-        }
+        if (!(Input.IsActionPressed("throwAway") && !IsReloading)) return;
+        ThrowWeapon(ref Weapons[weaponNum - 1]); // throws the weapon and removes its reference 
+
     }
-    void ReloadI(ref Weaponrb Weapon,double delta)
+    void ReloadI(ref Weaponrb Weapon, double delta)
     {
         if (Input.IsActionJustPressed("reload"))
         {
 
-            Weapon.ReloadStartSound.Play();
+            Weapon.ReloadStartSound.play();
         }
         if (Input.IsActionPressed("reload"))
         {
@@ -493,7 +495,7 @@ public partial class Player : DamagableCharacter
             CurrentReloadHeight = Mathf.Clamp(CurrentReloadHeight, MinReloadHeight, MaxReloadHeight);
             if (CurrentReloadHeight <= ReloadHeight)
             {
-                Weapons[weaponNum-1].Reload(ref WeaponAmmo[weaponNum - 1]);
+                Weapons[weaponNum - 1].Reload(ref WeaponAmmo[weaponNum - 1]);
             }
         }
         else
@@ -557,8 +559,8 @@ public partial class Player : DamagableCharacter
             //uses metadata which is said by the respective scripts of each object 
             Node3D tempNode = (Node3D)GetColliderAsGD();
             if (tempNode == null) return;
-            
-                GD.Print(tempNode as Weaponrb);
+
+            GD.Print(tempNode as Weaponrb);
             switch (tempNode)
             {
                 case Weaponrb weapon:
@@ -609,7 +611,6 @@ public partial class Player : DamagableCharacter
             ZoomActualFovIncrease = Mathf.Lerp(ZoomActualFovIncrease, 0, 10 * (float)delta);
         }
         //fov init
-        GD.Print(RegularFov," ", ZoomActualFovIncrease ," " ,RunActualFovIncrease);
         camera.Fov = RegularFov - ZoomActualFovIncrease + RunActualFovIncrease;
 
     }
@@ -650,10 +651,10 @@ public partial class Player : DamagableCharacter
     }
     public void WeaponTake(Weaponrb tempWeapon)
     {
-            if (Weapons[weaponNum - 1] != null)SwapWeapon(Weapons[weaponNum - 1], tempWeapon);
-            Weapons[weaponNum - 1] = tempWeapon;
-            //GD.Print(Weapons[weaponNum - 1].Name);
-            ReadyGun(Weapons[weaponNum - 1]);
+        if (Weapons[weaponNum - 1] != null) SwapWeapon(Weapons[weaponNum - 1], tempWeapon);
+        Weapons[weaponNum - 1] = tempWeapon;
+        //GD.Print(Weapons[weaponNum - 1].Name);
+        ReadyGun(Weapons[weaponNum - 1]);
     }
     private void UpdateGrabbedObject()
     {

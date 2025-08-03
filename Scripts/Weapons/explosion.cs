@@ -6,18 +6,28 @@ public partial class explosion : Area3D
     public int Damage = 50;
     public float Force = 3;
     public int Penetration = 0;
-    [Export] Timer timerDelay;
+    [Export] Timer timerDelay = new Timer();
     public Node3D ParentNode;
     [Export] public float DamageFalloff = 0.5f;
 
 
 
-    public override void _Ready()
+
+    public explosion(float Range = 25f)
     {
-        CollisionShape3D CollisionShape = (GetChild(0) as CollisionShape3D);
-        CollisionShape.Scale = Vector3.One * Range;
+        //CollisionShape3D CollisionShape = (GetChild(0) as CollisionShape3D);
+        CollisionShape3D CollisionShape = new CollisionShape3D();
+        SphereShape3D Shape = new SphereShape3D();
+        Shape.Radius = Range;
+        CollisionShape.Shape = Shape;
+        AddChild(CollisionShape);
         Monitoring = true;
         Monitorable = true;
+        AddChild(timerDelay);
+
+    }
+    public override void _Ready()
+    {
         timerDelay.Timeout += setExplode;
         timerDelay.Start(0.1f);
     }
@@ -25,7 +35,6 @@ public partial class explosion : Area3D
     {
         Explode();
     }
-
     private void Explode()
     {
         var OverlapingBodies = GetOverlappingBodies();

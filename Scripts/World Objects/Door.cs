@@ -8,7 +8,7 @@ public partial class Door : InteractableObject
     [Export] public int DoorID = 0;
 
     public Damagable DamageHandler;
-    [Export] bool Damageable = true;
+    [Export]public bool Damageable = true;
     [Export] public string EffectPath = "res://Prefabs/WoodParticle.tscn";
 
     [Export] public float Health = 100;
@@ -140,7 +140,7 @@ public partial class Door : InteractableObject
     }
     bool CheckIDS(int[] IDS)
     {
-        foreach (int id in IDS)
+        foreach (int id in IDS)// i think the id is number that needs to be equal to one of the id player has wow o algo
         {
             if (id == DoorID)
             {

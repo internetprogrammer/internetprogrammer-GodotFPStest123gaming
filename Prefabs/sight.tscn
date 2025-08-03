@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cb3byjl7g5qvh"]
 
-[ext_resource type="Script" uid="uid://n7euvrbnmmvy" path="res://Scripts/Sight.cs" id="1_23mdv"]
+[ext_resource type="Script" uid="uid://n7euvrbnmmvy" path="res://Scripts/AI/Sight.cs" id="1_23mdv"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_f8taj"]
 

@@ -77,7 +77,7 @@ public partial class Weaponrb : RigidBody3D
     }
     void Initialize()
     { 
-        ShootSound = new AudioHandler(Path:SoundPath, MaxDB:MaxDB, Pitch: Pitch);
+        ShootSound = new AudioHandler(Path:SoundPath, MaxDB:MaxDB, Pitch: Pitch,Suspicious:true);
         AddChild(ShootSound);
         ReloadStartSound = new AudioHandler(Path: ReloadStartSoundPath);
         AddChild(ReloadStartSound);
@@ -125,7 +125,7 @@ public partial class Weaponrb : RigidBody3D
         ShootSound.PitchScale = Pitch - ((MaxAmmo - Ammo) * AudioPitchStep);
         if (Ammo > 0 && CanShoot)
         {
-            ShootSound.Play();
+            ShootSound.play();
             if (Type == WeaponType.HitScan)
             {
                 ShootHitScan(rayCast3DHeadAim);
@@ -202,11 +202,15 @@ public partial class Weaponrb : RigidBody3D
                     rigid.LinearVelocity += -GlobalTransform.Basis.Z * (Damage * (Penetration + 1) * Knockback);
                 }
                 break;
-            case Door door when door.CanBeInteracted:
+            case Door door when door.Damageable:
                 door.DamageHandler.DamageTarget(Damage, Penetration, tempNode);
                 break;
-            case DoorMechanical doormech when doormech.CanBeInteracted:
+            case Door door:
+                break;
+            case DoorMechanical doormech when doormech.Damageable:
                 doormech.DamageHandler.DamageTarget(Damage, Penetration, tempNode);
+                break;
+            case DoorMechanical doormech:
                 break;
             case Civilian civilian:
                 civilian.DamageHandler.DamageTarget(Damage, Penetration, tempNode);
@@ -231,7 +235,7 @@ public partial class Weaponrb : RigidBody3D
     }
     public void Reload(ref int PlayerAmmo)
     {
-        ReloadEndSound.Play();
+        ReloadEndSound.play();
         if (PlayerAmmo <= MaxAmmo - Ammo) // if player ammo is less than needed ammo to fill
         {
             Ammo += PlayerAmmo;

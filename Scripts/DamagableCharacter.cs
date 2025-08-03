@@ -62,7 +62,7 @@ public abstract partial class DamagableCharacter : CharacterBody3D
                 DamageHandler.DamageTarget(FallDamageAmount * (FallingVariableInt / FallDamageLimit), 0);
 
             }
-            else if (DropSound is not null && FallingVariable > DropSoundLimit) DropSound.Play();
+            else if (DropSound is not null && FallingVariable > DropSoundLimit) DropSound.play();
 
             FallingVariable = 0;
         }

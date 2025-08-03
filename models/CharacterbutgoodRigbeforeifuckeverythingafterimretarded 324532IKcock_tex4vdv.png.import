@@ -1,0 +1,38 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://cd1twactcyygk"
+path.s3tc="res://.godot/imported/CharacterbutgoodRigbeforeifuckeverythingafterimretarded 324532IKcock_tex4vdv.png-97f3e6a03d43b0ee9dee439f011f359a.s3tc.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "ba77a198ae3f54012ce515482cfa43ee"
+}
+
+[deps]
+
+source_file="res://Models/CharacterbutgoodRigbeforeifuckeverythingafterimretarded 324532IKcock_tex4vdv.png"
+dest_files=["res://.godot/imported/CharacterbutgoodRigbeforeifuckeverythingafterimretarded 324532IKcock_tex4vdv.png-97f3e6a03d43b0ee9dee439f011f359a.s3tc.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0

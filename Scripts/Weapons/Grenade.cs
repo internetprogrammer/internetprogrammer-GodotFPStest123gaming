@@ -4,8 +4,8 @@ public partial class Grenade : RigidBody3D
 {
     [Export] public int Damage = 200;
     [Export] public int Penetration = 0;
-    [Export] PackedScene Explosion;
-    [Export] public float range = 5f;
+
+    [Export] public float range = 25f;
     [Export] public float GrenadeTime = 5;
     [Export] public float Force = 20;
     [Export] public AudioStreamPlayer3D ExplosionSound;
@@ -41,14 +41,12 @@ public partial class Grenade : RigidBody3D
         Node3D player = GetNode<Node3D>("/root/World/Player");
         Effect.LookAt(player.GlobalPosition);
         Effect.Emitting = true;
-        Node3D node = Explosion.Instantiate<Node3D>();
-        explosion ExplosionInstance = (explosion)node;
-        AddChild(ExplosionInstance);
-        node.GlobalPosition = GlobalPosition;
-        ExplosionInstance.ParentNode = ModelNode;
-        ExplosionInstance.Damage = Damage;
-        ExplosionInstance.Penetration = Penetration;
-        ExplosionInstance.Force = Force;
+        explosion Explosion = new explosion(range);
+        AddChild(Explosion);
+        Explosion.ParentNode = ModelNode;
+        Explosion.Damage = Damage;
+        Explosion.Penetration = Penetration;
+        Explosion.Force = Force;
         DecayTimer.Start(3);
         //ExplosionInstance.Range = range;
     }
