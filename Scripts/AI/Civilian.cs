@@ -4,7 +4,7 @@ public partial class Civilian : NPC
 {
 
 
-
+    
     Timer WanderCheckTime = new Timer();
     float TimeBetweenWanderCheck = 7;
     float WanderAmount = 6.0f;
@@ -35,10 +35,7 @@ public partial class Civilian : NPC
             Navigate(GlobalPosition + target);
         }
     }
-    public void Talk(Node3D target)// so that the civ looks at the player
-    {
-        LookAt(target.GlobalPosition);
-    }
+
 
     public void Stare()
     {

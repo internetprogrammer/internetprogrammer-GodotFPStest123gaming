@@ -167,7 +167,7 @@ public partial class Weapon : Node3D
         DelayTimer.Start(60.0 / RoundsPerMinute); //(60.0f)/RoundsPerMinute
         CanShoot = false;
         Ammo--;
-        Node3D player = GetNode<Node3D>("/root/World/Player");
+        Node3D player = Global.Player;
         GD.Print(Name, ":", Effect);
         Effect.LookAt(player.GlobalPosition);
         Effect.Emitting = true;

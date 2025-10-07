@@ -176,7 +176,7 @@ public partial class Weaponrb : RigidBody3D
         DelayTimer.Start(60.0 / RoundsPerMinute); //(60.0f)/RoundsPerMinute
         CanShoot = false;
         Ammo--;
-        Node3D player = GetNode<Node3D>("/root/World/Player");
+        Node3D player = Global.Player;
         Effect.LookAt(player.GlobalPosition);
         Effect.Emitting = true;
         Recoil();

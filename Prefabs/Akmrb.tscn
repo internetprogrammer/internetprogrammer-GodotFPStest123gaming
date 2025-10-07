@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dlhix5klju7p8" path="res://Prefabs/MuzzleFlash.tscn" id="6_stbek"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ju7kl"]
-size = Vector3(1.43201, 1.15643, 1.76312)
+size = Vector3(1.43201, 0.682174, 1.27673)
 
 [node name="WeaponPhysicsBody" type="RigidBody3D"]
 mass = 1.5
@@ -19,7 +19,8 @@ MaxAmmo = 30
 Ammo = 30
 RoundsPerMinute = 650.0
 WeaponFireMode = 2
-WeaponOffset = Vector3(0.42, -0.6, -0.6)
+WeaponOffset = Vector3(0.42, -0.6, -0.5)
+Lerp = true
 BulletCrater = ExtResource("3_qwtdb")
 Casing = ExtResource("2_8qstr")
 AudioPitchStep = 0.01
@@ -43,8 +44,8 @@ transform = Transform3D(-2.18557e-10, 0, 0.005, 0, 0.005, 0, -0.005, 0, -2.18557
 transform = Transform3D(-0.05, 0, -7.54979e-09, 0, 0.05, 0, 7.54979e-09, 0, -0.05, -2.27374e-13, 0.218497, -1.02097)
 
 [node name="AKMS1" parent="." instance=ExtResource("6_1ibuc")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+transform = Transform3D(-3.27835e-08, 0, 0.75, 0, 0.75, 0, -0.75, 0, -3.27835e-08, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.115, 1.54614e-11, 0, 1.5234e-11, 0.655, 0, 0, 0, 1.33, -0.00800871, -0.0396318, 0.163855)
+transform = Transform3D(0.115, 1.54614e-11, 0, 1.5234e-11, 0.655, 0, 0, 0, 1.33, -0.00800871, 0.025787, 0.120127)
 shape = SubResource("BoxShape3D_ju7kl")

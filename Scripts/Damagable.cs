@@ -64,9 +64,9 @@ public partial class Damagable : Node3D
         if (Effect != null) // if another object is giving the damagable an effect
         {
 
-            Node3D player = GetNode<Node3D>("/root/World/Player");
+            Node3D player = Global.Player;
 
-            GpuParticles3D e = Effect.Instantiate<GpuParticles3D>();
+            GpuParticles3D e = Effect.Instantiate<GpuParticles3D>();    
             GetNode<Node3D>("/root/World").AddChild(e);
             e.GlobalPosition = ((Node3D)GetParent()).GlobalPosition;
             e.LookAt(player.GlobalPosition);

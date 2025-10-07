@@ -2,6 +2,7 @@ using Godot;
 
 public abstract partial class NPC : DamagableCharacter
 {
+    string line = "im a hyper 1488borea rapist, my name is bo sinn o algo";
     public const float PanickedRunDistance = 3f;
     public const float NPCTurnRate = 10f;
     [ExportGroup("Standard Movement")]
@@ -19,10 +20,12 @@ public abstract partial class NPC : DamagableCharacter
     Vector3 targetRotation;
     Vector3 lerpTargetRotation;
 
+    Vector3 TargetRotationLerp = new(0, 0, 0);
+
     public const float PanicMultiplier = 0.1f;
 
-    public RandomNumberGenerator PanicGenerator = new RandomNumberGenerator();
-    public RandomNumberGenerator WanderGenerator = new RandomNumberGenerator();
+    public RandomNumberGenerator PanicGenerator = new();
+    public RandomNumberGenerator WanderGenerator = new();
 
     public int UnpanicValue = 10;
     public int MinimumPanicRunDistance = 3;
@@ -33,7 +36,9 @@ public abstract partial class NPC : DamagableCharacter
     public bool IsRunning = false;
 
     float ActualSpeed = 0;
-    public Vector3 TargetRotation { get;  set; }// rotation that the player ought to be 
+
+    public new string Name = "schlomo sosalberg";
+    public Vector3 TargetRotation { get; set; }// rotation that the player ought to be 
 
 
 
@@ -48,13 +53,22 @@ public abstract partial class NPC : DamagableCharacter
     }
     public enum Command
     {
-        Standing, Wandering, LimitedWandering,Assaulting, Retreat, Guard, Patrol
+        Standing, Wandering, LimitedWandering, Assaulting, Retreat, Guard, Patrol
     }
     public State CurrentState = State.Aware;
     State HashedState;
     public override void _Ready()
     {
         PanicGenerator.Randomize();
+    }
+    public void Talk(Node3D target)// so that the civ looks at the player
+    {
+        Global.Player.UI.Notify(line);
+        TargetRotationLerp = GlobalTransform.LookingAt(
+        target.GlobalPosition,
+        Vector3.Up
+        ).Basis.GetEuler();
+        //LookAt(target.GlobalPosition);
     }
     public void SetPanic()
     {
@@ -86,12 +100,16 @@ public abstract partial class NPC : DamagableCharacter
     }
     public void Navigate(Vector3 target)
     {
-        Vector3 direction = (target - GlobalPosition); 
+        Vector3 direction = (target - GlobalPosition);
         direction.Y = 0; // Prevent vertical tilting
 
         if (direction.LengthSquared() > 0.01f)
         {
-            LookAt(GlobalPosition + direction.Normalized(), Vector3.Up);
+            TargetRotationLerp = GlobalTransform.LookingAt(
+            target,
+            Vector3.Up
+            ).Basis.GetEuler();
+            //LookAt(GlobalPosition + direction.Normalized(), Vector3.Up);
         }
         NavigationAgent.TargetPosition = target;
     }
@@ -103,7 +121,7 @@ public abstract partial class NPC : DamagableCharacter
     public override void _PhysicsProcess(double delta)
     {
         //GD.Print(CurrentState, GetWhetherReachedDestination());
-
+        if(CurrentState != State.Searching && CurrentState != State.Engaging) Rotation = Rotation.Lerp(TargetRotationLerp, NPCTurnRate * (float)delta);
         if (CurrentState == State.Panicked && GetWhetherReachedDestination() && !IsPanicked)// twitching that doesnt look good btw so plis fix
         {
             Panic();

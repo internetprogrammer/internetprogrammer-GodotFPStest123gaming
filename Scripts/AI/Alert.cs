@@ -28,6 +28,7 @@ public partial class Alert : Area3D
             {
                 Enemy target = (Enemy)body;
                 target.CheckSound(GlobalPosition);
+
             }
             else if (body is Civilian)
             {

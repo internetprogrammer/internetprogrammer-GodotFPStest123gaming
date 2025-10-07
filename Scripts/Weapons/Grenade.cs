@@ -38,7 +38,7 @@ public partial class Grenade : RigidBody3D
     public void Explode()
     {
         ExplosionSound.Play();
-        Node3D player = GetNode<Node3D>("/root/World/Player");
+        Node3D player = Global.Player;  
         Effect.LookAt(player.GlobalPosition);
         Effect.Emitting = true;
         explosion Explosion = new explosion(range);

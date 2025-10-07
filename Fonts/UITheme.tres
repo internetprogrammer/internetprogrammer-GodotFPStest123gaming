@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://brrs5sgl6auef"]
+
+[ext_resource type="FontFile" uid="uid://dfu1tf101w6ge" path="res://Fonts/CourierPrime-Regular.ttf" id="1_b5sxe"]
+
+[resource]
+default_font = ExtResource("1_b5sxe")

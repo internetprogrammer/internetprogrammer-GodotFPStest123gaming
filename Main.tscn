@@ -1,0 +1,75 @@
+[gd_scene load_steps=4 format=3 uid="uid://s6cenv8uuccy"]
+
+[ext_resource type="Script" uid="uid://b31fwg6ypgg5w" path="res://UI.cs" id="1_glv2v"]
+[ext_resource type="Theme" uid="uid://brrs5sgl6auef" path="res://Fonts/UITheme.tres" id="2_uu6xs"]
+[ext_resource type="StyleBox" uid="uid://dko5vjq3pxda5" path="res://UIStyle.tres" id="3_r0du0"]
+
+[node name="Control" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_glv2v")
+
+[node name="DialogueBox" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -350.0
+offset_top = -480.0
+offset_right = 350.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme = ExtResource("2_uu6xs")
+theme_override_styles/panel = ExtResource("3_r0du0")
+
+[node name="dialogue" type="RichTextLabel" parent="DialogueBox"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -199.0
+offset_top = -149.0
+offset_right = 199.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "I Am A Stupid Fucking Nigger"
+
+[node name="Pause Menu" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 132.0
+grow_horizontal = 2
+theme_override_styles/panel = ExtResource("3_r0du0")
+
+[node name="Button" type="Button" parent="Pause Menu"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -138.0
+offset_bottom = 130.0
+grow_horizontal = 0
+theme = ExtResource("2_uu6xs")
+theme_override_colors/font_color = Color(0.991309, 0.0799611, 1.92523e-07, 1)
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = ExtResource("3_r0du0")
+text = "Exit"
+
+[connection signal="pressed" from="Pause Menu/Button" to="." method="OnExitButtonPressed"]

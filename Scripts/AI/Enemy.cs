@@ -6,7 +6,7 @@ public partial class Enemy : NPC
     [Export] public float TargetSearchRotate = 180f; // this will be itself - 45 since the targesearchsideoffset will subtract at start
     [Export] public float TargetSearchSideOffset = 90F;
     bool NeedsToChangeRotation = false;
-    const float SearchRate = 0.3f;
+    const float SearchRate = 0.15f;
     Vector3 OldRotation;
 
     [ExportGroup("Skill")]
@@ -28,8 +28,9 @@ public partial class Enemy : NPC
     Timer ReloadTimer = new();
     [Export] public float ForgetDelay = 5; // delay before the enemy decides to stop searching
     Timer ForgetTimer = new();
-
+    Timer AquireTargetTimer = new ();
     bool IsAiming = false;
+    bool CanGo = false;
 
     Node3D target;
     Vector3 LastKnownLocation = Vector3.Zero;
@@ -39,15 +40,22 @@ public partial class Enemy : NPC
         AddChild(ThinkingTimer);
         AddChild(ReloadTimer);
         AddChild(ForgetTimer);
+        AddChild(AquireTargetTimer);
+        AquireTargetTimer.OneShot = true;
         ThinkingTimer.OneShot = true;
         ReloadTimer.OneShot = true;
         ForgetTimer.OneShot = true;
+        AquireTargetTimer.Timeout += OnAquireTargetTimerTimeout;
         ThinkingTimer.Timeout += OnThinkingTimerTimeout;
         ReloadTimer.Timeout += OnReloadTimerTimeout;
         ForgetTimer.Timeout += OnForgetTimerTimeout;
 
         InitializeDamagableCharacter();
         AddChild(DamageHandler);
+    }
+    void OnAquireTargetTimerTimeout()
+    {
+        CanGo = true;
     }
     void OnThinkingTimerTimeout()
     {
@@ -116,7 +124,6 @@ public partial class Enemy : NPC
             Navigate(LastKnownLocation);
             if (GetWhetherReachedDestination() && CurrentState != State.Searching)
             {
-                GD.Print("bibixi");
                 StartSearch();
                 LastKnownLocation = Vector3.Zero;
             }
@@ -156,10 +163,21 @@ public partial class Enemy : NPC
         CheckSound(Target);
 
     }
-    public void CheckSound(Vector3 Target)
+
+    public async void CheckSound(Vector3 Target)
+    {
+        AquireTargetTimer.Start();
+        while (!CanGo)
+        {
+            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+        }
+        CanGo = false;  
+        CheckSound(Target);
+    }
+    public void NavigateToSound(Vector3 Target)
     {
         Navigate(Target);
-        if(GetWhetherReachedDestination() && CurrentState != State.Searching) StartSearch();
+        if (GetWhetherReachedDestination() && CurrentState != State.Searching) StartSearch();
     }
     public override void _Process(double delta)
     {

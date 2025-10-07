@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dninn2c218wt1"]
+
+[ext_resource type="Texture2D" uid="uid://nn5blnkqjo0j" path="res://assets/textures/world/PineFloor_256.jpg" id="1_2n2ui"]
+
+[resource]
+albedo_texture = ExtResource("1_2n2ui")
+metallic_specular = 0.0
+texture_filter = 2

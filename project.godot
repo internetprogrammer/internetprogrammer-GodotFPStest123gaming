@@ -12,7 +12,7 @@ config_version=5
 
 config/name="CharacterControllerCSharp"
 config/version="0.1"
-run/main_scene="uid://cunf43wviu6dp"
+run/main_scene="uid://cya27tmh0w7sg"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://Legacy/images/icon.svg"
 

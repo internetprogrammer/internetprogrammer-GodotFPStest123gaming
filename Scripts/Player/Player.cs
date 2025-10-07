@@ -30,6 +30,7 @@ public partial class Player : DamagableCharacter
     [Export] float HeadMovementFrequency = 2.5f;
 
     // Nodes
+    public UI UI;
     Node3D head;
     Camera3D camera;
     Node3D body;
@@ -125,6 +126,7 @@ public partial class Player : DamagableCharacter
     [Export] public string KickSoundPath = "res://Sounds/KickSound.mp3";
     public override void _Ready()
     {
+        Global.Player = this;
         InitializeDamagableCharacter();
         WalkSound = new AudioHandler(WalkSoundPath);
         AddChild(WalkSound);
@@ -145,9 +147,9 @@ public partial class Player : DamagableCharacter
             if (head.GetChild(3) is RayCast3D grabcast) RayCastCheckForObject = grabcast; else GD.PrintErr("grab ray cast is null!");
             if (head.GetChild(4) is RayCast3D headaimcast) RayCastHeadAim = headaimcast; else GD.PrintErr("head aim ray cast is null!");
             if (head.GetChild(5) is RayCast3D kickaimcast) RayCastKick = kickaimcast; else GD.PrintErr("kick ray cast is null!");
-
         }
         else GD.PrintErr("head is null!");
+        if (GetChild(1) is UI ui) UI = ui; else GD.PrintErr("UI is null!");
         if (this is CharacterBody3D characterbody && characterbody != null) body = characterbody; else GD.PrintErr("body is null!");
         if (GetNode<Node3D>("/root/World") is Node3D world && world != null)
         {
@@ -574,7 +576,9 @@ public partial class Player : DamagableCharacter
                 case DoorMechanical doormech when doormech.CanBeInteracted:
                     doormech.Interact(LockIDS);
                     break;
-
+                case Civilian civilian:
+                    civilian.Talk(this);
+                    break;
                 case Lever lever:
                     lever.Interact();
                     break;
@@ -619,7 +623,7 @@ public partial class Player : DamagableCharacter
         Node3D tempNode = (Node3D)GetColliderAsGD();
         if (tempNode != null)
         {
-            if (tempNode is Weaponrb || tempNode.GetChild(0) is InteractableObject || tempNode.GetChild(0) is RetrievableObject || tempNode is Lever || tempNode is Button || CheckColliderFromRB() != null)
+            if (tempNode is Weaponrb || tempNode.GetChild(0) is InteractableObject || tempNode is Civilian|| tempNode.GetChild(0) is RetrievableObject || tempNode is Lever || tempNode is Button || CheckColliderFromRB() != null)
             {
 
                 Crosshair.Text = InteractCrosshair;
